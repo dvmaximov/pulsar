@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 
 import { ApiService } from "../api/api.service";
 import { ActionType } from "./actionType.interface";
+import { defaultActions } from "./actions.data";
 
 @Injectable()
 export class DictonaryService {
@@ -21,14 +22,8 @@ export class DictonaryService {
   }
 
   private async fillActionType(): Promise<any> {
-    const types = [
-      "установка азимута",
-      "установка наклона",
-      "ожидание",
-      "разряд",
-    ];
-    for (const name of types) {
-      await this.create({ name });
+    for (const action of defaultActions) {
+      await this.create(action);
     }
     return null;
   }
