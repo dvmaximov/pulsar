@@ -9,20 +9,22 @@ import TaskList from "../pages/Tasks/TaskList";
 import WorkList from "../pages/Works/WorkList";
 import TaskActionList from "../pages/Tasks/TaskActionList";
 
+const root = import.meta.env.BASE_URL;
+
 const AppRouter = ({ routes }) => {
   return (
     <>
       <BrowserRouter>
         <MainLayout>
           <Routes>
-            <Route path="/" element={<Main />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/tasks" element={<Tasks />}>
-                <Route path="/tasks" element={<TaskList />} />
-                <Route path="/tasks/:id" element={<TaskActionList />} />
+            <Route path={`${root}`} element={<Main />}>
+              <Route path={`${root}`} element={<Home />} />
+              <Route path={`${root}tasks`} element={<Tasks />}>
+                <Route path={`${root}tasks`} element={<TaskList />} />
+                <Route path={`${root}tasks:id`} element={<TaskActionList />} />
               </Route>
-              <Route path="/works" element={<Works />}>
-                <Route path="/works" element={<WorkList />} />
+              <Route path={`${root}works`} element={<Works />}>
+                <Route path={`${root}works`} element={<WorkList />} />
                 {/* <Route path="/works/:id" element={<TaskActionList />} /> */}
               </Route>
             </Route>
