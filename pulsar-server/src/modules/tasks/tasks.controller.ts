@@ -21,6 +21,12 @@ export class TasksController {
     return tasks;
   }
 
+  @Get(":id")
+  async getById(@Param("id") id): Promise<Task[]> {
+    const tasks = await this.tasksService.getById(id);
+    return tasks;
+  }
+
   @Post()
   async create(@Body() task: any) {
     return await this.tasksService.create(task);

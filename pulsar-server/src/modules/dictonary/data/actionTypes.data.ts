@@ -1,5 +1,8 @@
+import { ACTION } from "../types/actionType.interface";
+
 export const defaultActions = [
   {
+    id: ACTION.ACTION_AZIMUTH,
     name: "установка азимута",
     value1: {
       label: "азимут (град)",
@@ -21,6 +24,7 @@ export const defaultActions = [
     },
   },
   {
+    id: ACTION.ACTION_SLOPE,
     name: "установка наклона",
     value1: {
       label: "наклон (град)",
@@ -42,6 +46,7 @@ export const defaultActions = [
     },
   },
   {
+    id: ACTION.ACTION_WAIT,
     name: "ожидание",
     value1: {
       label: "время (сек)",
@@ -63,6 +68,7 @@ export const defaultActions = [
     },
   },
   {
+    id: ACTION.ACTION_SPARK,
     name: "разряд",
     value1: {
       label: "количество",

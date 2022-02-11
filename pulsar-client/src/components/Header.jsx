@@ -29,7 +29,7 @@ const Header = ({ toggleOpen }) => {
   ));
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <ToolBar disableGutters>
           <Typography variant="h6" noWrap component="h1" sx={styles.logoSm}>

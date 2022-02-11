@@ -10,6 +10,10 @@ export class TasksService {
     return await this.api.getAll("tasks");
   }
 
+  async getById(id: number): Promise<Task[]> {
+    return await this.api.getById("tasks", id);
+  }
+
   async create(task: Task): Promise<Task> {
     return await this.api.create("tasks", task);
   }

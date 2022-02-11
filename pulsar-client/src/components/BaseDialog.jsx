@@ -7,7 +7,7 @@ const BaseDialog = (props) => {
       open={open}
       onClose={onCloseDialog}
       sx={{
-        "& .MuiPaper-root": { width: { xs: "95%", sm: "50%" } },
+        "& .MuiPaper-root": { width: { xs: "98%", sm: "50%" } },
       }}
     >
       {children}

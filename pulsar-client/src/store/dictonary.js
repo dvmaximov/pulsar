@@ -1,14 +1,18 @@
 import { makeAutoObservable } from "mobx";
-import taskService from "../services/task.service";
+import dictonaryService from "../services/dictonary.service";
 import dictonaryStaticService from "../services/dictonary.service.static";
 
 const service =
   import.meta.env.VITE_STORE === "STATIC"
     ? dictonaryStaticService
-    : taskService;
+    : dictonaryService;
 
 class Dictonary {
   actionTypes = [];
+  workTypes = [];
+  statusTypes = [];
+  WORK = {};
+  STATUS = {};
 
   constructor() {
     makeAutoObservable(this);
@@ -16,11 +20,16 @@ class Dictonary {
   }
 
   fill(data) {
-    this.actionTypes = data;
+    this.actionTypes = data.actionTypes;
+    this.workTypes = data.workTypes;
+    this.statusTypes = data.statusTypes;
+    this.WORK = data.WORK;
+    this.STATUS = data.STATUS;
   }
 
   async fetch() {
-    this.fill(await service.fetch());
+    const result = await service.fetch();
+    this.fill(result);
   }
 }
 

@@ -1,6 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
 
-import { Dictonary } from "./dictonary.interface";
+import { Dictonary } from "./types/dictonary.interface";
 import { DictonaryService } from "./dictonary.service";
 
 @Controller("dictonary")

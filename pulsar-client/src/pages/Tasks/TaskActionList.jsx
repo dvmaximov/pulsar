@@ -10,6 +10,7 @@ import Button from "@mui/material/Button";
 import TaskActionItem from "../../components/Tasks/TaskActionItem";
 import TaskActionEdit from "../../components/Tasks/TaskActionEdit";
 import BaseDialog from "../../components/BaseDialog";
+import ConfirmDialog from "../../components/ConfirmDialog";
 
 import { tasks } from "../../store";
 
@@ -18,7 +19,8 @@ const TaskActionList = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [action, setAction] = useState(null);
   const [currentTask, setCurrentTask] = useState({});
-  const [modified, setModified] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [removeAction, setRemoveAction] = useState(null);
 
   useEffect(() => {
     tasks.fetchById(params.id).then((task) => setCurrentTask(task));
@@ -38,10 +40,28 @@ const TaskActionList = () => {
     setOpenDialog(true);
   }, []);
 
-  const onRemove = (id) => {
-    const actions = currentTask.actions.filter((action) => action.id !== id);
-    setCurrentTask((task) => ({ ...task, actions }));
-    tasks.update(currentTask);
+  const onRemove = (action) => {
+    setRemoveAction(action);
+    setOpenConfirm(true);
+  };
+
+  const onRemoveOk = () => {
+    if (removeAction) {
+      const actions = currentTask.actions.filter(
+        (item) => removeAction.id !== item.id
+      );
+      const updatedTask = { ...currentTask, actions };
+      setCurrentTask(updatedTask);
+      tasks.update(updatedTask).then(() => {
+        setRemoveAction(null);
+      });
+    }
+    setOpenConfirm(false);
+  };
+
+  const onRemoveCancel = () => {
+    setRemoveAction(null);
+    setOpenConfirm(false);
   };
 
   const onSubmit = (action) => {
@@ -100,6 +120,16 @@ const TaskActionList = () => {
           action={action}
         />
       </BaseDialog>
+      <ConfirmDialog
+        open={openConfirm}
+        onOk={onRemoveOk}
+        onCancel={onRemoveCancel}
+      >
+        <Typography sx={{ mb: 2 }}>Удалить выбранное действие?</Typography>
+        <Typography align="center" sx={{ fontWeight: "bold" }}>
+          {removeAction?.type?.name}
+        </Typography>
+      </ConfirmDialog>
     </Box>
   );
 };

@@ -1,0 +1,19 @@
+import { STATUS } from "../types/statusType.interface";
+export const defaultStatus = [
+  {
+    id: STATUS.STATUS_WAIT,
+    name: "ожидание",
+  },
+  {
+    id: STATUS.STATUS_RUN,
+    name: "выполнение",
+  },
+  {
+    id: STATUS.STATUS_DONE,
+    name: "завершено",
+  },
+  {
+    id: STATUS.STATUS_EXPIRED,
+    name: "просрочено",
+  },
+];

@@ -16,10 +16,10 @@ class Tasks {
     this.taskList = data;
   }
 
-  async remove(id) {
-    const result = await service.remove(id);
+  async remove(task) {
+    const result = await service.remove(task.id);
     if (result.removed === 1) {
-      const newData = this.taskList.filter((task) => id !== task.id);
+      const newData = this.taskList.filter((item) => item.id !== task.id);
       this.fill(newData);
     }
     return result.removed;

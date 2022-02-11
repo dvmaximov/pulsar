@@ -4,8 +4,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 
-import { dictonary } from "../../store";
-
 const TaskActionItem = ({ action, onRemove, onEdit }) => {
   return (
     <ListItem
@@ -82,7 +80,7 @@ const TaskActionItem = ({ action, onRemove, onEdit }) => {
         <Button
           variant="outlined"
           size="small"
-          onClick={() => onRemove(action.id)}
+          onClick={() => onRemove(action)}
         >
           удалить
         </Button>

@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 
 import TaskItem from "../../components/Tasks/TaskItem";
 import BaseDialog from "../../components/BaseDialog";
+import ConfirmDialog from "../../components/ConfirmDialog";
 import AddTask from "../../components/Tasks/AddTask";
 
 import { tasks } from "../../store";
@@ -15,16 +16,14 @@ import { tasks } from "../../store";
 const TaskList = () => {
   const navigate = useNavigate();
   const [openNewTask, setOpenNewTask] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [removeTask, setRemoveTask] = useState(null);
 
   const onSelect = useCallback((id) => {
     navigate(`/tasks/${id}`);
   }, []);
 
   useEffect(() => tasks.fetch(), []);
-
-  const onRemove = (id) => {
-    tasks.remove(id);
-  };
 
   const onCloseDialog = useCallback(() => {
     setOpenNewTask(false);
@@ -33,6 +32,25 @@ const TaskList = () => {
   const onOpenDialog = useCallback(() => {
     setOpenNewTask(true);
   }, []);
+
+  const onRemove = (task) => {
+    setRemoveTask(task);
+    setOpenConfirm(true);
+  };
+
+  const onRemoveOk = () => {
+    if (removeTask) {
+      tasks.remove(removeTask).then(() => {
+        setRemoveTask(null);
+      });
+    }
+    setOpenConfirm(false);
+  };
+
+  const onRemoveCancel = () => {
+    setRemoveTask(null);
+    setOpenConfirm(false);
+  };
 
   const onAddTask = useCallback((newTask) => {
     tasks.create({ ...newTask, actions: [] });
@@ -81,6 +99,16 @@ const TaskList = () => {
           onCloseDialog={onCloseDialog}
         />
       </BaseDialog>
+      <ConfirmDialog
+        open={openConfirm}
+        onOk={onRemoveOk}
+        onCancel={onRemoveCancel}
+      >
+        <Typography sx={{ mb: 2 }}>Удалить выбранную программу?</Typography>
+        <Typography align="center" sx={{ fontWeight: "bold" }}>
+          {removeTask?.name}
+        </Typography>
+      </ConfirmDialog>
     </Box>
   );
 };

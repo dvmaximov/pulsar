@@ -24,7 +24,7 @@ class TaskService {
   }
 
   async update(task) {
-    const updatedTask = await axios.put(`${host}/tasks/${id}`);
+    const updatedTask = await axios.put(`${host}/tasks/${task.id}`, task);
     return updatedTask;
   }
 }

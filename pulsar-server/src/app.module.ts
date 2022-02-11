@@ -6,6 +6,7 @@ import { join } from "path";
 import { ApiModule } from "./modules/api/api.module";
 import { TasksModule } from "./modules/tasks/tasks.module";
 import { DictonaryModule } from "./modules/dictonary/dictonary.module";
+import { WorksModule } from "./modules/work/works.module";
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { DictonaryModule } from "./modules/dictonary/dictonary.module";
     ApiModule,
     DictonaryModule,
     TasksModule,
+    WorksModule,
   ],
   controllers: [AppController],
   providers: [],
