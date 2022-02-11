@@ -13,6 +13,8 @@ import AddTask from "../../components/Tasks/AddTask";
 
 import { tasks } from "../../store";
 
+const root = import.meta.env.BASE_URL;
+
 const TaskList = () => {
   const navigate = useNavigate();
   const [openNewTask, setOpenNewTask] = useState(false);
@@ -20,7 +22,7 @@ const TaskList = () => {
   const [removeTask, setRemoveTask] = useState(null);
 
   const onSelect = useCallback((id) => {
-    navigate(`/tasks/${id}`);
+    navigate(`${root}tasks/${id}`);
   }, []);
 
   useEffect(() => tasks.fetch(), []);
