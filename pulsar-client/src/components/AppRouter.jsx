@@ -7,7 +7,9 @@ import Tasks from "../pages/Tasks";
 import Works from "../pages/Works";
 import TaskList from "../pages/Tasks/TaskList";
 import WorkList from "../pages/Works/WorkList";
+import CurrentWork from "../pages/Works/CurrentWork";
 import TaskActionList from "../pages/Tasks/TaskActionList";
+import Settings from "../pages/Settings";
 
 const root = import.meta.env.BASE_URL;
 
@@ -25,8 +27,9 @@ const AppRouter = ({ routes }) => {
               </Route>
               <Route path={`${root}works`} element={<Works />}>
                 <Route path={`${root}works`} element={<WorkList />} />
-                {/* <Route path="/works/:id" element={<TaskActionList />} /> */}
+                <Route path="/works/current-work" element={<CurrentWork />} />
               </Route>
+              <Route path={`${root}settings`} element={<Settings />}></Route>
             </Route>
           </Routes>
         </MainLayout>

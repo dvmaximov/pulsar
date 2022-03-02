@@ -8,6 +8,11 @@ class WorksService {
     return res.data;
   }
 
+  async fetchCurrentWork() {
+    const res = await axios.get(`${host}/works/current-work`);
+    return res.data;
+  }
+
   async create(work) {
     const newWork = await axios.post(`${host}/works`, work);
     return newWork.data;
@@ -16,6 +21,11 @@ class WorksService {
   async remove(id) {
     const removedWork = await axios.delete(`${host}/works/${id}`);
     return removedWork.data;
+  }
+
+  async update(work) {
+    const updatedWork = await axios.put(`${host}/works/${work.id}`, work);
+    return updatedWork;
   }
 }
 

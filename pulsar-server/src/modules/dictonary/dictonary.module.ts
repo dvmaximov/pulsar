@@ -6,5 +6,6 @@ import { DictonaryService } from "./dictonary.service";
 @Module({
   controllers: [DictonaryController],
   providers: [DictonaryService],
+  exports: [DictonaryService],
 })
 export class DictonaryModule {}

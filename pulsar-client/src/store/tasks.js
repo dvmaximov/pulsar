@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import taskService from "../services/task.service";
-import taskStaticService from "../services/task.service.static";
+import taskStaticService from "../services/static/task.service.static";
 
 const service =
   import.meta.env.VITE_STORE === "STATIC" ? taskStaticService : taskService;

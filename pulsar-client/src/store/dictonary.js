@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import dictonaryService from "../services/dictonary.service";
-import dictonaryStaticService from "../services/dictonary.service.static";
+import dictonaryStaticService from "../services/static/dictonary.service.static";
 
 const service =
   import.meta.env.VITE_STORE === "STATIC"
@@ -30,6 +30,10 @@ class Dictonary {
   async fetch() {
     const result = await service.fetch();
     this.fill(result);
+  }
+
+  getStatus(statusId) {
+    return this.statusTypes.find((item) => item.id === statusId);
   }
 }
 
