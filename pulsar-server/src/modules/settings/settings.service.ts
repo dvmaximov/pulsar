@@ -1,6 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { ApiService } from "../api/api.service";
 import { defaultSettings } from "./data/settings.data";
+import * as cp from "child_process";
+
+const exec = cp.exec;
 
 @Injectable()
 export class SettingsService {
@@ -23,10 +26,29 @@ export class SettingsService {
     return this.api.update("settings", id, value);
   }
 
+  async updateServer(): Promise<any> {
+    await this.cmd(`cd /pulsar`);
+    await this.cmd(`git pull origin master`);
+    await this.cmd(`cd /pulsar/pulsar-server`);
+    await this.cmd(`rm -rf dist`);
+    await this.cmd(`pm2 restart 0`);
+  }
+
   private async fillSettings(): Promise<any> {
     for (const setting of defaultSettings) {
       await this.api.create("settings", setting);
     }
     return null;
+  }
+
+  private cmd(command): Promise<any> {
+    return new Promise((resolve, reject) => {
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(stdout);
+      });
+    });
   }
 }

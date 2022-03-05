@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = `${location.protocol}//${location.host}`;
+const host = `${location.protocol}//${location.hostname}`;
 
 class TaskService {
   async fetch() {

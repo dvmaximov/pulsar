@@ -11,6 +11,11 @@ export class SettingsController {
     return this.settingsService.getAll();
   }
 
+  @Get("/updateServer")
+  updateServer(): Promise<any> {
+    return this.settingsService.updateServer();
+  }
+
   @Put(":id")
   async update(@Param("id") id, @Body() setting: Setting): Promise<any> {
     return this.settingsService.update(id, setting);

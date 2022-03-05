@@ -19,6 +19,10 @@ class Settings {
     const result = await service.fetch();
     this.fill(result);
   }
+
+  async updateServer() {
+    await service.updateServer();
+  }
 }
 
 export const settings = new Settings();

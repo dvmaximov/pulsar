@@ -18,6 +18,7 @@ const SettingsEditor = () => {
   return (
     <>
       <List>{settingList}</List>
+      <Button onClick={settings.updateServer}>Обновление</Button>
     </>
   );
 };
