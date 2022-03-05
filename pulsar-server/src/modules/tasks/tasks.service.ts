@@ -7,6 +7,7 @@ export class TasksService {
   constructor(private api: ApiService) {}
 
   async getAll(): Promise<Task[]> {
+    console.log("test updated");
     return await this.api.getAll("tasks");
   }
 
