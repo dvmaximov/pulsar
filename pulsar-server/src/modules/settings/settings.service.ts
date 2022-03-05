@@ -27,10 +27,10 @@ export class SettingsService {
   }
 
   async updateServer(): Promise<any> {
-    await this.cmd(`cd /pulsar/pulsar-server`);
+    await this.cmd(`cd /root/pulsar/pulsar-server`);
     await this.cmd(`rm -rf dist`);
     await this.cmd(`rm -rf client`);
-    await this.cmd(`cd /pulsar`);
+    await this.cmd(`cd /root/pulsar`);
     await this.cmd(`git pull origin master`);
     return await this.cmd(`pm2 restart 0`);
   }
