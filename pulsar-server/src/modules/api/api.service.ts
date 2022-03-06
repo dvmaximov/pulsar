@@ -1,10 +1,21 @@
 import { Injectable } from "@nestjs/common";
 import axios from "axios";
+// import { access } from "fs/promises";
+// import { constants } from "fs";
 
 const host = "http://localhost:5000/";
 
 @Injectable()
 export class ApiService {
+  // constructor() {
+  //   this.createDb();
+  // }
+
+  // private async createDb() {
+  //   const fileExists = await access("db.json");
+  //   console.log("existing file ", fileExists);
+  // }
+
   async create(table: string, value: unknown): Promise<any> {
     const result = await axios.post(`${host}${table}`, value);
     return result.data;
