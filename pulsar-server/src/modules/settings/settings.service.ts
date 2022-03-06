@@ -34,6 +34,10 @@ export class SettingsService {
     return await this.cmd(`pm2 restart 0`);
   }
 
+  async shutdown(): Promise<any> {
+    return await this.cmd(`shutdown now`);
+  }
+
   private async fillSettings(): Promise<any> {
     for (const setting of defaultSettings) {
       await this.api.create("settings", setting);

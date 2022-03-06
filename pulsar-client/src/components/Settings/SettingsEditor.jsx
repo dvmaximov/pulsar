@@ -19,6 +19,7 @@ const SettingsEditor = () => {
     <>
       <List>{settingList}</List>
       <Button onClick={settings.updateServer}>Обновление</Button>
+      <Button onClick={settings.shutdown}>Выключить устройство</Button>
     </>
   );
 };

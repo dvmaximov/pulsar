@@ -16,6 +16,11 @@ export class SettingsController {
     return this.settingsService.updateServer();
   }
 
+  @Get("/shutdown")
+  shutdown(): Promise<any> {
+    return this.settingsService.shutdown();
+  }
+
   @Put(":id")
   async update(@Param("id") id, @Body() setting: Setting): Promise<any> {
     return this.settingsService.update(id, setting);
