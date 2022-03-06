@@ -86,6 +86,17 @@ export class DeviceService {
     return different / speed;
   }
 
+  private async calculeteSlope(slope): Promise<any> {
+    let speed = await this.settings.getById(SETTING.SETTING_SLOPE_SPEED);
+    speed = speed.value;
+    let currentSlope = await this.settings.getById(
+      SETTING.SETTING_CURRENT_SLOPE,
+    );
+    currentSlope = currentSlope.value;
+    const different = slope - currentSlope;
+    return different / speed;
+  }
+
   async setAzimuth(value): Promise<any> {
     let time = await this.calculeteAngle(value);
     const direction = time < 0 ? PIN.PIN_RIGHT : PIN.PIN_LEFT;
@@ -104,8 +115,18 @@ export class DeviceService {
   }
 
   async setSlop(value): Promise<any> {
-    await this.delay(3000);
-    console.log(value);
+    let time = await this.calculeteSlope(value);
+    const direction = time < 0 ? PIN.PIN_UP : PIN.PIN_DOWN;
+    time = Math.abs(time * 1000);
+
+    if (time === 0) return;
+    this.writePin(direction, DEVICE.DEVICE_ON);
+    await this.delay(time);
+    this.writePin(direction, DEVICE.DEVICE_OFF);
+
+    const slope = await this.settings.getById(SETTING.SETTING_CURRENT_SLOPE);
+    slope.value = value;
+    this.settings.update(SETTING.SETTING_CURRENT_SLOPE, slope);
   }
 
   async setWait(value): Promise<any> {
