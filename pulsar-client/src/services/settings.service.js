@@ -8,11 +8,11 @@ class SettingsService {
     return res.data;
   }
 
-  updateServer() {
-    axios.get(`${host}/settings/updateServer`);
+  async updateServer() {
     setTimeout(() => {
       window.close();
-    }, 1000);
+    }, 2000);
+    await axios.get(`${host}/settings/updateServer`);
   }
 }
 
