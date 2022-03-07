@@ -19,6 +19,7 @@ class SettingsService {
     setTimeout(() => {
       window.close();
     }, 2000);
+    console.log(`${host}/settings/shutdown`);
     await axios.get(`${host}/settings/shutdown`);
   }
 }
