@@ -134,6 +134,7 @@ export class DeviceService {
   }
 
   async setSpark(value): Promise<any> {
+    console.log("spark ", value);
     this.writePin(PIN.PIN_SPARK, DEVICE.DEVICE_ON);
     await this.delay(value * 1000);
     this.writePin(PIN.PIN_SPARK, DEVICE.DEVICE_OFF);

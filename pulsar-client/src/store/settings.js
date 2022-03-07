@@ -23,6 +23,10 @@ class Settings {
   async updateServer() {
     await service.updateServer();
   }
+
+  async shutdown() {
+    await service.shutdown();
+  }
 }
 
 export const settings = new Settings();

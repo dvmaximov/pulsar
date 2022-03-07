@@ -35,7 +35,6 @@ export class SettingsService {
   }
 
   async shutdown(): Promise<any> {
-    console.log("server shutdown");
     return await this.cmd(`shutdown now`);
   }
 
