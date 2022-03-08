@@ -4,6 +4,8 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
 import { settings } from "../../store";
 
 const SettingsEditor = () => {
@@ -12,7 +14,15 @@ const SettingsEditor = () => {
   }, []);
 
   const settingList = settings.settingList.map((setting) => {
-    return <ListItem key={setting.id}>{setting.name}</ListItem>;
+    console.log(setting);
+    return (
+      <ListItem key={setting.id}>
+        {setting.name}
+        <FormControl>
+          <TextField value={setting.value}></TextField>
+        </FormControl>
+      </ListItem>
+    );
   });
 
   return (

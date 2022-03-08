@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { settings } from "../../store";
 
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";

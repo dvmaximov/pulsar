@@ -226,7 +226,7 @@ export class RunnerService {
           await this.device.setWait(details[i].value1);
           break;
         case ACTION.ACTION_SPARK:
-          await this.device.setSpark(details[i].value1);
+          await this.device.setSpark(details[i].value2);
           break;
       }
       details[i].status = this.getStatus(STATUS.STATUS_DONE);

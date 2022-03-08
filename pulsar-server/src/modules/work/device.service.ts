@@ -6,8 +6,8 @@ import { SETTING } from "../settings/settings.interface";
 const PIN = {
   PIN_LEFT: 7,
   PIN_RIGHT: 11,
-  PIN_UP: 5,
-  PIN_DOWN: 3,
+  PIN_UP: 3,
+  PIN_DOWN: 5,
   PIN_SPARK: 13,
 };
 
@@ -134,7 +134,6 @@ export class DeviceService {
   }
 
   async setSpark(value): Promise<any> {
-    console.log("spark ", value);
     this.writePin(PIN.PIN_SPARK, DEVICE.DEVICE_ON);
     await this.delay(value * 1000);
     this.writePin(PIN.PIN_SPARK, DEVICE.DEVICE_OFF);
