@@ -40,6 +40,18 @@ class Works {
     this.fill([...this.workList, newWork]);
   }
 
+  async stopCurrent(work) {
+    return await service.stopCurrent();
+  }
+
+  async calibrateAzimuth(time) {
+    return await service.calibrateAzimuth(time);
+  }
+
+  async calibrateSlope(time) {
+    return await service.calibrateSlope(time);
+  }
+
   async remove(work) {
     const result = await service.remove(work.id);
     if (result.removed === 1) {

@@ -49,7 +49,7 @@ export class DeviceService {
     try {
       switch (pin) {
         case PIN.PIN_LEFT:
-          if (this.driveLeft) await this.driveLeft.write(value).catch(empty);
+          if (this.driveLeft) this.driveLeft.write(value).catch(empty);
           break;
         case PIN.PIN_RIGHT:
           if (this.driveRight) this.driveRight.write(value).catch(empty);
@@ -95,6 +95,19 @@ export class DeviceService {
     currentSlope = currentSlope.value;
     const different = slope - currentSlope;
     return different / speed;
+  }
+
+  async calibrateAzimuth(time) {
+    console.log("azimuth ", time);
+    this.writePin(PIN.PIN_LEFT, DEVICE.DEVICE_ON);
+    await this.delay(time * 1000);
+    this.writePin(PIN.PIN_LEFT, DEVICE.DEVICE_OFF);
+  }
+
+  async calibrateSlope(time) {
+    this.writePin(PIN.PIN_DOWN, DEVICE.DEVICE_ON);
+    await this.delay(time * 1000);
+    this.writePin(PIN.PIN_DOWN, DEVICE.DEVICE_OFF);
   }
 
   async setAzimuth(value): Promise<any> {

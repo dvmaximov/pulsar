@@ -6,7 +6,9 @@ import {
   Delete,
   Body,
   Param,
+  Req,
 } from "@nestjs/common";
+import { Request } from "express";
 import { Work } from "./work.interface";
 
 import { WorksService } from "./works.service";
@@ -24,12 +26,12 @@ export class WorksController {
     return this.worksService.getAll();
   }
 
-  @Get("/stop-current")
+  @Get("/stopCurrent")
   async stopCurrentWork(): Promise<any> {
-    return this.runner.stopAll();
+    await this.runner.stopAll();
   }
 
-  @Get("/current-work")
+  @Get("/currentWork")
   async getCurrentWork(): Promise<any> {
     return this.worksService.getCurrentWork();
   }
@@ -44,6 +46,16 @@ export class WorksController {
   @Put(":id")
   async update(@Param("id") id, @Body() work: Work): Promise<any> {
     return this.worksService.update(id, work);
+  }
+
+  @Get("/calibrateAzimuth")
+  async calibrateAzimuth(@Req() request: Request): Promise<any> {
+    return this.runner.calibrateAzimuth(+request.query["time"]);
+  }
+
+  @Get("/calibrateSlope")
+  async calibrateSlope(@Req() request: Request): Promise<any> {
+    return this.runner.calibrateSlope(+request.query["time"]);
   }
 
   @Delete(":id")

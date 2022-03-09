@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { useState, useMemo } from "react";
 import { format, parseISO, getTime } from "date-fns";
+import { ru } from "date-fns/locale";
 
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -12,6 +13,8 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+
+import MobileDateTimePicker from "@mui/lab/MobileDateTimePicker";
 
 import { dictonary } from "../../store";
 
@@ -46,14 +49,16 @@ const AddWork = ({ task, onSubmit, onCancel }) => {
   const [work, setWork] = useState(initialWork);
   const [status, setStatus] = useState(initialStatus);
   const [dateTime, setDateTime] = useState(
-    format(new Date(), "yyyy-MM-dd'T'HH:mm")
+    format(new Date(), "yyyy-MM-dd'T'HH:mm", { locale: ru })
   );
+  // const [dateTime, setDateTime] = useState(
+  //   new Date("2018-01-01T00:00:00.000Z")
+  // );
 
   const onDateTimeChange = (e) => {
-    // console.log("value", e.target.value);
-    const startTime = getTime(parseISO(e.target.value));
-    // console.log("datatime", getTime(parseISO(value)));
-    setDateTime(e.target.value);
+    const formated = format(e, "yyyy-MM-dd'T'HH:mm", { locale: ru });
+    const startTime = getTime(parseISO(formated));
+    setDateTime(formated);
     setWork({
       ...work,
       startTime,
@@ -107,7 +112,7 @@ const AddWork = ({ task, onSubmit, onCancel }) => {
           </FormControl>
           {status.id === dictonary.STATUS.STATUS_WAIT && (
             <FormControl>
-              <TextField
+              {/* <TextField
                 label="Дата и время"
                 type="datetime-local"
                 value={dateTime}
@@ -115,6 +120,11 @@ const AddWork = ({ task, onSubmit, onCancel }) => {
                 InputLabelProps={{
                   shrink: true,
                 }}
+              /> */}
+              <MobileDateTimePicker
+                value={dateTime}
+                onChange={onDateTimeChange}
+                renderInput={(params) => <TextField {...params} />}
               />
             </FormControl>
           )}

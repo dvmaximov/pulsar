@@ -207,6 +207,14 @@ export class RunnerService {
     this.currentWork.work.details = [...details];
   }
 
+  async calibrateAzimuth(time) {
+    await this.device.calibrateAzimuth(time);
+  }
+
+  async calibrateSlope(time) {
+    await this.device.calibrateSlope(time);
+  }
+
   private async startLoop() {
     if (!this.currentWork) return;
     const details = this.currentWork.work.details;

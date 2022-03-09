@@ -20,6 +20,17 @@ class Settings {
     this.fill(result);
   }
 
+  async update(setting) {
+    try {
+      await service.update(setting);
+
+      const newSettings = [...this.settingList];
+      const idx = newSettings.findIndex((item) => item.id === setting.id);
+      newSettings[idx] = { ...setting };
+      this.fill(newSettings);
+    } catch (e) {}
+  }
+
   async updateServer() {
     await service.updateServer();
   }

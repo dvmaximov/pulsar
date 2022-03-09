@@ -1,11 +1,15 @@
 import axios from "axios";
 
 const host = `${location.protocol}//${location.hostname}`;
-console.log(host);
+
 class SettingsService {
   async fetch() {
     const res = await axios.get(`${host}/settings`);
     return res.data;
+  }
+
+  async update(setting) {
+    return await axios.put(`${host}/settings/${setting.id}`, setting);
   }
 
   async updateServer() {

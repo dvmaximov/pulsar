@@ -14,6 +14,7 @@ import AddTask from "../../components/Tasks/AddTask";
 import { tasks } from "../../store";
 
 const root = import.meta.env.BASE_URL;
+// const root = `${location.protocol}//${location.hostname}/`;
 
 const TaskList = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const TaskList = () => {
   const [removeTask, setRemoveTask] = useState(null);
 
   const onSelect = useCallback((id) => {
-    navigate(`${root}tasks/${id}`);
+    navigate(`/tasks/${id}`);
   }, []);
 
   useEffect(() => tasks.fetch(), []);

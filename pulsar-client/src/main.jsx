@@ -1,13 +1,32 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ruRU } from "@mui/material/locale";
+import { ru } from "date-fns/locale";
+
 import AppRouter from "./components/AppRouter";
 import "./index.css";
 
 import * as socket from "./services/socket.service";
 
+const theme = createTheme(
+  {
+    palette: {
+      primary: { main: "#1976d2" },
+    },
+  },
+  ruRU
+);
+
 ReactDOM.render(
   <React.StrictMode>
-    <AppRouter />
+    <ThemeProvider theme={theme}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} locale={ru}>
+        <AppRouter />
+      </LocalizationProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

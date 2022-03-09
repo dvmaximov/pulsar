@@ -9,7 +9,7 @@ class WorksService {
   }
 
   async fetchCurrentWork() {
-    const res = await axios.get(`${host}/works/current-work`);
+    const res = await axios.get(`${host}/works/currentWork`);
     return res.data;
   }
 
@@ -23,9 +23,21 @@ class WorksService {
     return removedWork.data;
   }
 
+  async stopCurrent(id) {
+    return await axios.get(`${host}/works/stopCurrent`);
+  }
+
   async update(work) {
     const updatedWork = await axios.put(`${host}/works/${work.id}`, work);
     return updatedWork;
+  }
+
+  async calibrateAzimuth(time) {
+    await axios.get(`${host}/works/calibrateAzimuth?time=${time}`);
+  }
+
+  async calibrateSlope(time) {
+    await axios.get(`${host}/works/calibrateSlope?time=${time}`);
   }
 }
 

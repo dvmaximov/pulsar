@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,6 +14,7 @@ import { works, dictonary } from "../../store";
 
 const TaskItem = ({ task, onSelect, onRemove }) => {
   const [openDialog, setOpenDialog] = useState(false);
+  const navigate = useNavigate();
 
   const onOpenDialog = () => {
     setOpenDialog(true);
@@ -22,9 +24,12 @@ const TaskItem = ({ task, onSelect, onRemove }) => {
     setOpenDialog(false);
   };
 
-  const onCreateWork = (work) => {
-    works.create(work);
+  const onCreateWork = async (work) => {
+    await works.create(work);
     setOpenDialog(false);
+    if (work.status.id === dictonary.STATUS.STATUS_RUN) {
+      navigate(`/works/current-work`);
+    }
   };
 
   return (
