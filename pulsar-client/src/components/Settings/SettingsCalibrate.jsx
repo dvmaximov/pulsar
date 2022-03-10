@@ -76,6 +76,11 @@ const SettingsCalibrate = ({ onCancel, mode }) => {
 
   const maxSteps = steps.length;
   const [result, setResult] = useState(new Array(maxSteps).fill(0));
+  const [speeds, setSpeeds] = useState(new Array(maxSteps).fill(0));
+
+  const round = (value, digits = 1) => {
+    return Number(value.toFixed(digits));
+  };
 
   const onStart = () => {
     const time = steps[activeStep].time;
@@ -91,17 +96,34 @@ const SettingsCalibrate = ({ onCancel, mode }) => {
     calibrate(time);
   };
 
+  const onStop = () => {
+    works.stopCurrent();
+    onCancel();
+  };
+
   const onChangeValue = (e) => {
     const newValue = +e.target.value;
     const newResult = [...result];
+    const newSpeeds = [...speeds];
+
     newResult[activeStep] = newValue;
+    let newSpeed = round(
+      (newValue - newResult[activeStep - 1]) / steps[activeStep].time
+    );
+    newSpeed = newSpeed <= 0 ? 0 : newSpeed;
+    newSpeeds[activeStep] = newSpeed;
     setResult(newResult);
+    setSpeeds(newSpeeds);
   };
 
   const onSubmit = () => {
-    const sumResult = result[result.length - 1];
-    const sumTimes = steps.reduce((sum, item) => sum + item.time, 0);
-    const speed = Number((sumResult / sumTimes).toFixed(1));
+    const speeds = [0]; // для первого незначимого шага
+    for (let i = 1; i < steps.length; i++) {
+      const value = round((result[i] - result[i - 1]) / steps[i].time);
+      speeds.push(value);
+    }
+    const sumResult = speeds.reduce((sum, item) => sum + item);
+    const speed = round(sumResult / (steps.length - 1));
     let setting = {};
     let currentDeviceValue = {};
     switch (mode) {
@@ -174,7 +196,7 @@ const SettingsCalibrate = ({ onCancel, mode }) => {
                 }}
               />
               <Typography sx={{ mx: 1 }}>
-                Скорость: {result[activeStep]}
+                Скорость: {speeds[activeStep]}
               </Typography>
             </FormControl>
           )}

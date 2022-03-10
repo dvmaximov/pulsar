@@ -6,7 +6,7 @@ export const defaultActions = [
     name: "установка азимута",
     value1: {
       label: "азимут (град)",
-      max: 350,
+      max: 360,
       min: 0,
       step: 0.1,
     },

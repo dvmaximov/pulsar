@@ -98,7 +98,6 @@ export class DeviceService {
   }
 
   async calibrateAzimuth(time) {
-    console.log("azimuth ", time);
     this.writePin(PIN.PIN_LEFT, DEVICE.DEVICE_ON);
     await this.delay(time * 1000);
     this.writePin(PIN.PIN_LEFT, DEVICE.DEVICE_OFF);
