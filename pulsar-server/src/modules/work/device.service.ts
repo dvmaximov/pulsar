@@ -6,8 +6,8 @@ import { SETTING } from "../settings/settings.interface";
 const PIN = {
   PIN_LEFT: 7,
   PIN_RIGHT: 11,
-  PIN_UP: 3,
-  PIN_DOWN: 5,
+  PIN_UP: 5,
+  PIN_DOWN: 3,
   PIN_SPARK: 13,
 };
 
