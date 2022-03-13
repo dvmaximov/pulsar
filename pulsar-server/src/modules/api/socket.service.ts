@@ -27,4 +27,8 @@ export class SocketService {
   workStatusUpdate(): void {
     this.sendEvent("workStatusUpdate");
   }
+
+  sendServerTime(): void {
+    this.sendEvent("serverTime", Date.now() + "");
+  }
 }

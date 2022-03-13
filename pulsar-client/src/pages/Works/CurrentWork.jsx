@@ -1,5 +1,4 @@
 import { useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
 import Typography from "@mui/material/Typography";
@@ -11,14 +10,8 @@ import CurrentWorkItem from "../../components/Works/CurrentWorkItem";
 import { works } from "../../store";
 
 const CurrentWork = () => {
-  const navigate = useNavigate();
-
   const onStop = useCallback(() => {
     works.stopCurrent();
-  }, []);
-
-  const onToList = useCallback(() => {
-    navigate(`/tasks`);
   }, []);
 
   useEffect(() => {
@@ -46,14 +39,6 @@ const CurrentWork = () => {
       >
         <Typography variant="h6">Текущая задача</Typography>
         <Box>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={onToList}
-            sx={{ m: 1 }}
-          >
-            К списку
-          </Button>
           <Button
             variant="contained"
             color="primary"

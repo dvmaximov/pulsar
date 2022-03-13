@@ -8,6 +8,11 @@ class SettingsService {
     return res.data;
   }
 
+  async getServerTime() {
+    const res = await axios.get(`${host}/settings/serverTime`);
+    return res.data;
+  }
+
   async update(setting) {
     return await axios.put(`${host}/settings/${setting.id}`, setting);
   }

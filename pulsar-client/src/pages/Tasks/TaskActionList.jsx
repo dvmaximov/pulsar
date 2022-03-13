@@ -1,6 +1,6 @@
 import { v4 as newId } from "uuid";
 import { useEffect, useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -16,11 +16,17 @@ import { tasks } from "../../store";
 
 const TaskActionList = () => {
   const params = useParams();
+  const navigate = useNavigate();
+
   const [openDialog, setOpenDialog] = useState(false);
   const [action, setAction] = useState(null);
   const [currentTask, setCurrentTask] = useState({});
   const [openConfirm, setOpenConfirm] = useState(false);
   const [removeAction, setRemoveAction] = useState(null);
+
+  const onToList = useCallback(() => {
+    navigate(`/tasks`);
+  }, []);
 
   useEffect(() => {
     tasks.fetchById(params.id).then((task) => setCurrentTask(task));
@@ -107,9 +113,19 @@ const TaskActionList = () => {
         }}
       >
         <Typography variant="h5">Состав программы</Typography>
-        <Button variant="contained" color="primary" onClick={onAddAction}>
-          Добавить
-        </Button>
+        <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={onToList}
+            sx={{ mr: 1 }}
+          >
+            К списку
+          </Button>
+          <Button variant="contained" color="primary" onClick={onAddAction}>
+            Добавить
+          </Button>
+        </Box>
       </Box>
       <List>{items}</List>
       <BaseDialog open={openDialog} onCloseDialog={onCloseDialog}>

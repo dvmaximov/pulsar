@@ -13,7 +13,7 @@ const SettingsEdit = ({ setting, onCancel, onSubmit }) => {
   const [value, setValue] = useState({ ...setting });
 
   const onChangeValue = (e) => {
-    const newValue = e.target.value;
+    const newValue = +e.target.value;
     setValue({ ...value, value: newValue });
   };
 

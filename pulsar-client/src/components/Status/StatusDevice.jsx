@@ -1,10 +1,35 @@
+import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { settings } from "../../store";
 
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+
+import SettingsItem from "../Settings/SettingsItem";
+
+import { settings } from "../../store";
 
 const StatusDevice = () => {
+  useEffect(() => {
+    settings.fetch();
+  }, []);
+
+  const settingList = settings.settingList
+    .filter(
+      (setting) =>
+        setting.id !== settings.SETTING.SETTING_AZIMUTH_SPEED &&
+        setting.id !== settings.SETTING.SETTING_SLOPE_SPEED
+    )
+    .map((setting) => {
+      return (
+        <SettingsItem
+          key={setting.id}
+          setting={setting}
+          editable={false}
+        ></SettingsItem>
+      );
+    });
+
   return (
     <Box
       sx={{
@@ -18,6 +43,21 @@ const StatusDevice = () => {
       }}
     >
       <Typography>Информация об устройстве</Typography>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          px: 2,
+          mt: 2,
+          color: "blue",
+        }}
+      >
+        <Typography variant="div">Время сервера</Typography>
+        <Typography variant="div">{settings.serverTime}</Typography>
+      </Box>
+
+      <List sx={{ mb: 2 }}>{settingList}</List>
     </Box>
   );
 };

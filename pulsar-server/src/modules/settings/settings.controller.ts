@@ -16,6 +16,11 @@ export class SettingsController {
     return this.settingsService.updateServer();
   }
 
+  @Get("/serverTime")
+  serverTime(): Promise<any> {
+    return this.settingsService.serverTime();
+  }
+
   @Get("/shutdown")
   shutdown(): Promise<any> {
     return this.settingsService.shutdown();

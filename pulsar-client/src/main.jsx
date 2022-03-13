@@ -4,7 +4,7 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ruRU } from "@mui/material/locale";
-import { ru } from "date-fns/locale";
+import ru from "date-fns/locale/ru";
 
 import AppRouter from "./components/AppRouter";
 import "./index.css";

@@ -33,7 +33,6 @@ const WorkItem = ({ work, onSelect, onRemove }) => {
             color: "text.secondary",
           },
         }}
-        // onClick={() => onSelect(task.id)}
       >
         <Typography
           variant="p"

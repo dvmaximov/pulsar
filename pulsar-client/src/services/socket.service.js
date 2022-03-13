@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { works } from "../store";
+import { works, settings } from "../store";
 
 const socket = io(`ws://${location.hostname}`);
 
@@ -10,4 +10,8 @@ socket.on("connect", () => {
 socket.on("workStatusUpdate", (e) => {
   works.fetch();
   works.fetchCurrentWork();
+});
+
+socket.on("serverTime", (e) => {
+  settings.setServerTime(+e);
 });

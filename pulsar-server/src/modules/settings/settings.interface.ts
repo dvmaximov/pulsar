@@ -3,6 +3,7 @@ export const SETTING = {
   SETTING_SLOPE_SPEED: 2,
   SETTING_CURRENT_AZIMUTH: 3,
   SETTING_CURRENT_SLOPE: 4,
+  SETTING_VERSION: 5,
 };
 
 export interface Setting {

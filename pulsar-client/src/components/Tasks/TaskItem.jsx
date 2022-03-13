@@ -55,6 +55,7 @@ const TaskItem = ({ task, onSelect, onRemove }) => {
               bgcolor: "#f1f1f1",
               color: "text.secondary",
             },
+            alignItems: "center",
           }}
           onClick={() => onSelect(task.id)}
         >

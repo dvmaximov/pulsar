@@ -2,12 +2,28 @@ import { Injectable } from "@nestjs/common";
 import { ApiService } from "../api/api.service";
 import { Work } from "./work.interface";
 
+const MAX_WORKS = 15;
+
 @Injectable()
 export class WorksService {
   constructor(private api: ApiService) {}
 
+  private async clearWorks(works) {
+    const result = [...works];
+    const different = works.length - MAX_WORKS;
+    if (different > 0) {
+      for (let i = 0; i < different; i++) {
+        await this.delete(works[i].id);
+        result.shift();
+      }
+    }
+    return result;
+  }
+
   async getAll(): Promise<any> {
-    return await this.api.getAll("works");
+    let works = await this.api.getAll("works");
+    works = await this.clearWorks(works);
+    return works;
   }
 
   async getCurrentWork(): Promise<any> {

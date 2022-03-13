@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import BaseDialog from "../BaseDialog";
 import SettingsEdit from "./SettingsEdit";
 
-const SettingsItem = ({ setting, onEdit }) => {
+const SettingsItem = ({ setting, onEdit, editable = true }) => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const onOpenDialog = () => {
@@ -33,7 +33,7 @@ const SettingsItem = ({ setting, onEdit }) => {
           bgcolor: "#f9f9f9",
         }}
       >
-        <Typography sx={{ width: "25%" }}>{setting.name}</Typography>
+        <Typography sx={{ width: "40%" }}>{setting.name}</Typography>
         <Typography
           sx={{
             width: "25%",
@@ -45,7 +45,7 @@ const SettingsItem = ({ setting, onEdit }) => {
         >
           {setting.value}
         </Typography>
-        <Button onClick={onOpenDialog}>Изменить</Button>
+        {editable && <Button onClick={onOpenDialog}>Изменить</Button>}
       </ListItem>
       <BaseDialog open={openDialog} onCloseDialog={onCloseDialog}>
         <SettingsEdit
