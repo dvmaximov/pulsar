@@ -16,10 +16,6 @@ const WorkList = () => {
   const [openConfirm, setOpenConfirm] = useState(false);
   const [removeWork, setRemoveWork] = useState(null);
 
-  // const onSelect = useCallback((id) => {
-  //   navigate(`/tasks/${id}`);
-  // }, []);
-
   useEffect(() => works.fetch(), []);
 
   const onRemove = (work) => {

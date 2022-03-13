@@ -113,22 +113,30 @@ const StatusWorks = () => {
         )}
         {details.length !== 0 && <List>{details}</List>}
       </Box>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={onDetails}
-        sx={{ m: 1 }}
+      <Box
+        sx={{
+          display: "flex",
+          // justifyContent: "space-between",
+          bgcolor: "#cdcdcd",
+        }}
       >
-        Подробнее
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={onStop}
-        sx={{ m: 1 }}
-      >
-        Остановить
-      </Button>{" "}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onDetails}
+          sx={{ m: 1 }}
+        >
+          Подробнее
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={onStop}
+          sx={{ m: 1 }}
+        >
+          Остановить
+        </Button>
+      </Box>
     </Box>
   );
 };

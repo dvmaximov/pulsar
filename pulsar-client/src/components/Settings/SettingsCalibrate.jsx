@@ -60,6 +60,7 @@ const stepsSlope = [
 
 const SettingsCalibrate = ({ onCancel, mode }) => {
   const [activeStep, setActiveStep] = useState(0);
+  const [disableStart, setdisableStart] = useState(false);
 
   let title = "";
   let steps = [];
@@ -78,11 +79,14 @@ const SettingsCalibrate = ({ onCancel, mode }) => {
   const [result, setResult] = useState(new Array(maxSteps).fill(0));
   const [speeds, setSpeeds] = useState(new Array(maxSteps).fill(0));
 
-  const round = (value, digits = 1) => {
+  const round = (value, digits = 3) => {
     return Number(value.toFixed(digits));
   };
 
   const onStart = () => {
+    works.stopCurrent();
+
+    setdisableStart(true);
     const time = steps[activeStep].time;
     let calibrate = () => {};
     switch (mode) {
@@ -117,6 +121,8 @@ const SettingsCalibrate = ({ onCancel, mode }) => {
   };
 
   const onSubmit = () => {
+    works.stopCurrent();
+
     const speeds = [0]; // для первого незначимого шага
     for (let i = 1; i < steps.length; i++) {
       const value = round((result[i] - result[i - 1]) / steps[i].time);
@@ -151,10 +157,12 @@ const SettingsCalibrate = ({ onCancel, mode }) => {
 
   const onNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setdisableStart(false);
   };
 
   const onBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    setdisableStart(false);
   };
 
   return (
@@ -176,6 +184,7 @@ const SettingsCalibrate = ({ onCancel, mode }) => {
                 onClick={onStart}
                 variant="contained"
                 color="primary"
+                disabled={disableStart}
                 sx={{ width: { md: "50%", xl: "25%" }, mb: 1, ml: 1 }}
               >
                 Старт
@@ -226,7 +235,7 @@ const SettingsCalibrate = ({ onCancel, mode }) => {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onCancel}>Отмена</Button>
+        <Button onClick={onStop}>Отмена</Button>
         <Button onClick={onSubmit}>Сохранить</Button>
       </DialogActions>
     </>

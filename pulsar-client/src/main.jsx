@@ -15,6 +15,7 @@ const theme = createTheme(
   {
     palette: {
       primary: { main: "#1976d2" },
+      bgGray: { main: "#f9f9f9" },
     },
   },
   ruRU

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 
 import { ApiService } from "../api/api.service";
 import { WORK } from "./types/workType.interface";
+import { ACTION } from "./types/actionType.interface";
 import { STATUS } from "./types/statusType.interface";
 import { defaultActions } from "./data/actionTypes.data";
 import { defaultWorks } from "./data/workTypes.data";
@@ -30,7 +31,7 @@ export class DictonaryService {
       statusTypes = await this.api.getAll("statusTypes");
     }
 
-    return { actionTypes, workTypes, statusTypes, WORK, STATUS };
+    return { actionTypes, workTypes, statusTypes, WORK, STATUS, ACTION };
   }
 
   private async fillActionTypes(): Promise<any> {

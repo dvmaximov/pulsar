@@ -14,7 +14,6 @@ import AddTask from "../../components/Tasks/AddTask";
 import { tasks } from "../../store";
 
 const root = import.meta.env.BASE_URL;
-// const root = `${location.protocol}//${location.hostname}/`;
 
 const TaskList = () => {
   const navigate = useNavigate();

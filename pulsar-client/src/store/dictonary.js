@@ -13,6 +13,7 @@ class Dictonary {
   statusTypes = [];
   WORK = {};
   STATUS = {};
+  ACTION = {};
 
   constructor() {
     makeAutoObservable(this);
@@ -25,6 +26,7 @@ class Dictonary {
     this.statusTypes = data.statusTypes;
     this.WORK = data.WORK;
     this.STATUS = data.STATUS;
+    this.ACTION = data.ACTION;
   }
 
   async fetch() {
