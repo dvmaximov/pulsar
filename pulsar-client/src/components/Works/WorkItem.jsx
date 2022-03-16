@@ -1,15 +1,16 @@
 import { observer } from "mobx-react-lite";
-import { format, parseISO, getTime } from "date-fns";
-import { ru } from "date-fns/locale";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 
-import { works, dictonary } from "../../store";
+import { useStatusBgColor } from "../../hooks/useStatusBgColor";
+import { useDateFormat } from "../../hooks/useDateFormat";
 
 const WorkItem = ({ work, onSelect, onRemove }) => {
+  const bgColor = useStatusBgColor(work.status);
+  const date = useDateFormat(work.startTime);
   return (
     <ListItem
       sx={{
@@ -22,16 +23,12 @@ const WorkItem = ({ work, onSelect, onRemove }) => {
       <Box
         sx={{
           display: "flex",
-          bgcolor: "#ffffff",
           width: "80%",
           border: "1px solid #001e3c",
           borderRadius: "2px",
           cursor: "pointer",
           flexWrap: "wrap",
-          "&:hover": {
-            bgcolor: "#f1f1f1",
-            color: "text.secondary",
-          },
+          bgcolor: bgColor,
         }}
       >
         <Typography
@@ -48,15 +45,13 @@ const WorkItem = ({ work, onSelect, onRemove }) => {
         >
           {work.item.name}
         </Typography>
-        {work.startTime && (
-          <Typography
-            variant="p"
-            component="span"
-            sx={{ width: { xs: "100%", sm: "20%" }, padding: 1 }}
-          >
-            {format(new Date(work.startTime), "dd-MM-yyyy - HH:mm")}
-          </Typography>
-        )}
+        <Typography
+          variant="p"
+          component="span"
+          sx={{ width: { xs: "100%", sm: "20%" }, padding: 1 }}
+        >
+          {date}
+        </Typography>
       </Box>
       <Box
         sx={{

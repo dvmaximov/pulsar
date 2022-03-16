@@ -1,6 +1,5 @@
 import { useEffect, useCallback } from "react";
 import { observer } from "mobx-react-lite";
-import format from "date-fns/format";
 import { useNavigate } from "react-router-dom";
 
 import Typography from "@mui/material/Typography";
@@ -9,6 +8,7 @@ import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 
+import { useDateFormat } from "../../hooks/useDateFormat";
 import { works, dictonary } from "../../store";
 
 const StatusWorks = () => {
@@ -28,12 +28,15 @@ const StatusWorks = () => {
 
   const waitWorks = works.workList
     .filter((item) => item.status.id === dictonary.STATUS.STATUS_WAIT)
-    .map((work) => (
-      <ListItem key={work.id}>
-        {work.item.name}{" "}
-        {format(new Date(work.startTime), "dd-MM-yyyy - HH:mm")}
-      </ListItem>
-    ));
+    .map((work) => {
+      const date = useDateFormat(work.startTime);
+
+      return (
+        <ListItem key={work.id}>
+          {work.item.name} {date}
+        </ListItem>
+      );
+    });
 
   const runWorks = works.workList
     .filter((item) => item.status.id === dictonary.STATUS.STATUS_RUN)

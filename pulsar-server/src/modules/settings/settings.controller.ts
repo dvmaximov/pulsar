@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { Controller, Get, Put, Param, Body } from "@nestjs/common";
 import { Setting } from "./settings.interface";
 import { SettingsService } from "./settings.service";
@@ -13,7 +14,7 @@ export class SettingsController {
 
   @Get("/updateServer")
   updateServer(): Promise<any> {
-    return this.settingsService.updateServer();
+    return this.settingsService.updateServer().catch(() => {});
   }
 
   @Get("/serverTime")
@@ -23,7 +24,7 @@ export class SettingsController {
 
   @Get("/shutdown")
   shutdown(): Promise<any> {
-    return this.settingsService.shutdown();
+    return this.settingsService.shutdown().catch(() => {});
   }
 
   @Put(":id")

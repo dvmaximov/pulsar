@@ -2,13 +2,19 @@ import Button from "@mui/material/Button";
 
 import { settings } from "../../store";
 
-const SettingsControls = ({ openDialog }) => {
+const SettingsControls = ({ openDialog, openConfirm }) => {
+  const onSubmitUpdate = () => {
+    settings.shutdown;
+  };
+
   return (
     <>
       <Button
         variant="contained"
         color="primary"
-        onClick={settings.updateServer}
+        onClick={() => {
+          openConfirm("update");
+        }}
         sx={{ mr: 1, mb: 1 }}
       >
         Обновление сервера
@@ -16,7 +22,9 @@ const SettingsControls = ({ openDialog }) => {
       <Button
         variant="contained"
         color="primary"
-        onClick={settings.shutdown}
+        onClick={() => {
+          openConfirm("shutdown");
+        }}
         sx={{ mr: 1, mb: 1 }}
       >
         Выключить устройство

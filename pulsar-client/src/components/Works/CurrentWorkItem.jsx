@@ -2,17 +2,10 @@ import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 
 import { dictonary } from "../../store";
+import { useStatusBgColor } from "../../hooks/useStatusBgColor";
 
 const CurrentWorkItem = ({ work }) => {
-  let bgColor = "#f1f1f1";
-  switch (work.status.id) {
-    case dictonary.STATUS.STATUS_RUN:
-      bgColor = "#ffffe6";
-      break;
-    case dictonary.STATUS.STATUS_DONE:
-      bgColor = "#e8ffe6";
-      break;
-  }
+  const bgColor = useStatusBgColor(work.status);
 
   let value = "";
   switch (work.type.id) {
