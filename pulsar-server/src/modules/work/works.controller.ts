@@ -30,7 +30,10 @@ export class WorksController {
   async stopCurrentWork(): Promise<any> {
     try {
       await this.runner.stopAll();
-    } catch {}
+    } catch {
+      return { error: "Ошибка обновления" };
+    }
+    return null;
   }
 
   @Get("/currentWork")

@@ -110,20 +110,24 @@ export class DeviceService {
   }
 
   async setAzimuth(value): Promise<any> {
-    let time = await this.calculeteAngle(value);
-    const direction = time < 0 ? PIN.PIN_RIGHT : PIN.PIN_LEFT;
-    time = Math.abs(time * 1000);
+    try {
+      let time = await this.calculeteAngle(value);
+      const direction = time < 0 ? PIN.PIN_RIGHT : PIN.PIN_LEFT;
+      time = Math.abs(time * 1000);
 
-    if (time === 0) return;
-    this.writePin(direction, DEVICE.DEVICE_ON);
-    await this.delay(time);
-    this.writePin(direction, DEVICE.DEVICE_OFF);
+      if (time === 0) return;
+      await this.writePin(direction, DEVICE.DEVICE_ON);
+      await this.delay(time);
+      await this.writePin(direction, DEVICE.DEVICE_OFF);
 
-    const azimuth = await this.settings.getById(
-      SETTING.SETTING_CURRENT_AZIMUTH,
-    );
-    azimuth.value = value;
-    this.settings.update(SETTING.SETTING_CURRENT_AZIMUTH, azimuth);
+      const azimuth = await this.settings.getById(
+        SETTING.SETTING_CURRENT_AZIMUTH,
+      );
+      azimuth.value = value;
+      await this.settings.update(SETTING.SETTING_CURRENT_AZIMUTH, azimuth);
+    } catch (e) {
+      console.log("azimuth error");
+    }
   }
 
   async setSlop(value): Promise<any> {

@@ -41,11 +41,10 @@ export class SettingsService {
       await this.cmd(`git pull origin master`);
     } catch (e) {}
 
-    await this.cmd(`node ./src/update/update.ts`);
-
     try {
       await this.cmd(`pm2 restart 0`);
     } catch (e) {}
+    // await this.cmd(`node ./src/update/update.ts`);
   }
 
   async shutdown(): Promise<any> {
