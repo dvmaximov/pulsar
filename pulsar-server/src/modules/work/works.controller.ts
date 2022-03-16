@@ -27,12 +27,8 @@ export class WorksController {
   }
 
   @Get("/stopCurrent")
-  async stopCurrentWork(): Promise<any> {
-    try {
-      await this.runner.stopAll();
-    } catch {
-      return { error: "Ошибка обновления" };
-    }
+  stopCurrentWork(): Promise<any> {
+    this.runner.stopAll().catch(() => ({}));
     return null;
   }
 

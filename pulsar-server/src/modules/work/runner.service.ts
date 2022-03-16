@@ -77,7 +77,7 @@ export class RunnerService {
         });
       }
     } else if (work.status.id == STATUS.STATUS_RUN) {
-      this.startWork(work);
+      this.startWork(work).catch(() => ({}));
     }
   }
 
@@ -222,7 +222,6 @@ export class RunnerService {
       if (this.stopped) break;
       details[i].status = this.getStatus(STATUS.STATUS_RUN);
       await this.updateCurrentWork();
-
       switch (details[i].type.id) {
         case ACTION.ACTION_AZIMUTH:
           await this.device.setAzimuth(details[i].value1);
