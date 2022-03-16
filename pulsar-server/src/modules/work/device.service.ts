@@ -44,35 +44,35 @@ export class DeviceService {
   }
 
   private async writePin(pin, value): Promise<any> {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    const empty = () => {};
     try {
       switch (pin) {
         case PIN.PIN_LEFT:
-          if (this.driveLeft) this.driveLeft.write(value).catch(empty);
+          if (this.driveLeft) await this.driveLeft.write(value);
           break;
         case PIN.PIN_RIGHT:
-          if (this.driveRight) this.driveRight.write(value).catch(empty);
+          if (this.driveRight) await this.driveRight.write(value);
           break;
         case PIN.PIN_UP:
-          if (this.driveUp) this.driveUp.write(value).catch(empty);
+          if (this.driveUp) await this.driveUp.write(value);
           break;
         case PIN.PIN_DOWN:
-          if (this.driveDown) this.driveDown.write(value).catch(empty);
+          if (this.driveDown) await this.driveDown.write(value);
           break;
         case PIN.PIN_SPARK:
-          if (this.spark) this.spark.write(value).catch(empty);
+          if (this.spark) await this.spark.write(value);
           break;
       }
     } catch {}
   }
 
   async stopAll(): Promise<any> {
-    this.writePin(PIN.PIN_LEFT, DEVICE.DEVICE_OFF);
-    this.writePin(PIN.PIN_RIGHT, DEVICE.DEVICE_OFF);
-    this.writePin(PIN.PIN_UP, DEVICE.DEVICE_OFF);
-    this.writePin(PIN.PIN_DOWN, DEVICE.DEVICE_OFF);
-    this.writePin(PIN.PIN_SPARK, DEVICE.DEVICE_OFF);
+    try {
+      this.writePin(PIN.PIN_LEFT, DEVICE.DEVICE_OFF);
+      this.writePin(PIN.PIN_RIGHT, DEVICE.DEVICE_OFF);
+      this.writePin(PIN.PIN_UP, DEVICE.DEVICE_OFF);
+      this.writePin(PIN.PIN_DOWN, DEVICE.DEVICE_OFF);
+      this.writePin(PIN.PIN_SPARK, DEVICE.DEVICE_OFF);
+    } catch {}
   }
 
   private async calculeteAngle(azimuth): Promise<any> {

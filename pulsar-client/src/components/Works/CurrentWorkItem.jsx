@@ -14,7 +14,6 @@ const CurrentWorkItem = ({ work }) => {
       break;
   }
 
-  console.log(work.type.id);
   let value = "";
   switch (work.type.id) {
     case dictonary.ACTION.ACTION_AZIMUTH:

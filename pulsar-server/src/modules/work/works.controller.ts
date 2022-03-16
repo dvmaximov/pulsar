@@ -28,7 +28,9 @@ export class WorksController {
 
   @Get("/stopCurrent")
   async stopCurrentWork(): Promise<any> {
-    await this.runner.stopAll();
+    try {
+      await this.runner.stopAll();
+    } catch {}
   }
 
   @Get("/currentWork")

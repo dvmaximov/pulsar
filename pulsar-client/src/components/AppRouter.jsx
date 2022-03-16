@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { lazy } from "react";
 import Main from "./Main";
 import MainLayout from "./MainLayout";
 import Home from "../pages/Home";
@@ -10,6 +10,8 @@ import WorkList from "../pages/Works/WorkList";
 import CurrentWork from "../pages/Works/CurrentWork";
 import TaskActionList from "../pages/Tasks/TaskActionList";
 import Settings from "../pages/Settings";
+
+// const Works = lazy(() => import("../pages/Works"));
 
 const root = import.meta.env.BASE_URL;
 

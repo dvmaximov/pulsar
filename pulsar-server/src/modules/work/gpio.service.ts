@@ -13,6 +13,7 @@ import * as cp from "child_process";
 const exec = cp.exec;
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const emptyFn = () => {};
+
 export class Gpio {
   pin = 5;
   mode = "out";
@@ -38,13 +39,15 @@ export class Gpio {
   }
 
   read() {
-    return this.cmd(`gpio -1 read ${this.pin}`).then((state: string) => {
-      return state.replace(/[^\d]/gm, "");
-    });
+    return this.cmd(`gpio -1 read ${this.pin}`)
+      .then((state: string) => {
+        return state.replace(/[^\d]/gm, "");
+      })
+      .catch(emptyFn);
   }
 
   write(value) {
-    return this.cmd(`gpio -1 write ${this.pin} ${value}`);
+    return this.cmd(`gpio -1 write ${this.pin} ${value}`).catch(emptyFn);
   }
 
   cmd(command) {

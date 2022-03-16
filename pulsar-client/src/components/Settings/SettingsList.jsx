@@ -15,11 +15,14 @@ const SettingsList = () => {
   };
 
   const settingList = settings.settingList.map((setting) => {
+    let editable = true;
+    if (setting.id === settings.SETTING.SETTING_VERSION) editable = false;
     return (
       <SettingsItem
         key={setting.id}
         setting={setting}
         onEdit={onEdit}
+        editable={editable}
       ></SettingsItem>
     );
   });

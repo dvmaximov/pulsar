@@ -3,6 +3,7 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import ListItem from "@mui/material/ListItem";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 import BaseDialog from "../BaseDialog";
 import SettingsEdit from "./SettingsEdit";
@@ -34,18 +35,26 @@ const SettingsItem = ({ setting, onEdit, editable = true }) => {
         }}
       >
         <Typography sx={{ width: "40%" }}>{setting.name}</Typography>
-        <Typography
+        <Box
           sx={{
-            width: "25%",
+            width: "60%",
             display: "flex",
-            justifyContent: "center",
-            fontSize: "1.5rem",
-            color: "blue",
+            justifyContent: "space-between",
           }}
         >
-          {setting.value}
-        </Typography>
-        {editable && <Button onClick={onOpenDialog}>Изменить</Button>}
+          <Typography
+            sx={{
+              width: "50%",
+              display: "flex",
+              justifyContent: "center",
+              fontSize: "1.5rem",
+              color: "blue",
+            }}
+          >
+            {setting.value}
+          </Typography>
+          {editable && <Button onClick={onOpenDialog}>Изменить</Button>}
+        </Box>
       </ListItem>
       <BaseDialog open={openDialog} onCloseDialog={onCloseDialog}>
         <SettingsEdit
