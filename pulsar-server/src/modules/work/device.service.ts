@@ -23,7 +23,6 @@ export class DeviceService {
   private driveUp = null;
   private driveDown = null;
   private spark = null;
-  private diod = null;
 
   constructor(private readonly settings: SettingsService) {
     this.driveLeft = new Gpio({ pin: PIN.PIN_LEFT });
@@ -31,7 +30,6 @@ export class DeviceService {
     this.driveUp = new Gpio({ pin: PIN.PIN_UP });
     this.driveDown = new Gpio({ pin: PIN.PIN_DOWN });
     this.spark = new Gpio({ pin: PIN.PIN_SPARK });
-    this.diod = new Gpio({ pin: 15 });
   }
 
   private async delay(ms): Promise<any> {

@@ -63,7 +63,6 @@ export class SettingsService {
 
   backup() {
     let name = new Date().toLocaleString();
-    console.log(name);
     name = name
       .replace(/ /g, "")
       .replace(/,/g, "_")
@@ -71,7 +70,6 @@ export class SettingsService {
       .replace(/:/g, "-")
       .replace(/\//g, "-");
     name = `backupDB_${name}.json`;
-    console.log(name);
 
     const source = path.resolve(__dirname, "../../../db.json");
     const dist = path.resolve(__dirname, `../../../../backup/${name}`);
