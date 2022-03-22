@@ -68,7 +68,8 @@ export class SettingsService {
       .replace(/ /g, "")
       .replace(/,/g, "_")
       .replace(/\./g, "-")
-      .replace(/:/g, "-");
+      .replace(/:/g, "-")
+      .replace(/\//g, "-");
     name = `backupDB_${name}.json`;
     console.log(name);
 
