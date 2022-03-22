@@ -3,6 +3,7 @@
 /node_modules
 /backup
 db.json
+package-lock.json
 
 # Logs
 logs
