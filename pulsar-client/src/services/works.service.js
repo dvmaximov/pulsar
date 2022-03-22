@@ -1,11 +1,12 @@
-import axios from "axios";
+// import axios from "axios";
+import api from "./api.service";
 
-const host = `${location.protocol}//${location.hostname}`;
+// const host = `${location.protocol}//${location.hostname}`;
 
 class WorksService {
   async fetch() {
     const res = await axios.get(`${host}/works`);
-    return res.data;
+    return res.result;
   }
 
   async fetchCurrentWork() {

@@ -13,6 +13,7 @@ import { Work } from "./work.interface";
 
 import { WorksService } from "./works.service";
 import { RunnerService } from "./runner.service";
+import { ApiResult } from "../api/api.interface";
 
 @Controller("works")
 export class WorksController {
@@ -38,10 +39,11 @@ export class WorksController {
   }
 
   @Post()
-  async create(@Body() work: any): Promise<Work> {
-    const created: Work = await this.worksService.create(work);
-    this.runner.addWork(created);
-    return created;
+  async create(@Body() work: any): Promise<ApiResult> {
+    const answer = await this.worksService.create(work);
+    if (!answer.result) return answer;
+    this.runner.addWork(answer.result);
+    return answer;
   }
 
   @Put(":id")

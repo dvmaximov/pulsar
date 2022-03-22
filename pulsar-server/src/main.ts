@@ -7,7 +7,9 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useStaticAssets(join(__dirname, "../", "client"));
   app.setViewEngine("html");
-  app.enableCors();
+  app.enableCors({
+    exposedHeaders: "Content-Disposition",
+  });
   await app.listen(80);
 }
 bootstrap();

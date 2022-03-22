@@ -91,10 +91,10 @@ const SettingsCalibrate = ({ onCancel, mode }) => {
     let calibrate = () => {};
     switch (mode) {
       case "azimuth":
-        calibrate = works.calibrateAzimuth;
+        calibrate = settings.calibrateAzimuth;
         break;
       case "slope":
-        calibrate = works.calibrateSlope;
+        calibrate = settings.calibrateSlope;
         break;
     }
     calibrate(time);

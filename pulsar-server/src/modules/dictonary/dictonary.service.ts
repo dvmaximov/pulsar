@@ -7,31 +7,50 @@ import { STATUS } from "./types/statusType.interface";
 import { defaultActions } from "./data/actionTypes.data";
 import { defaultWorks } from "./data/workTypes.data";
 import { defaultStatus } from "./data/statusTypes.data";
+import { ApiResult } from "../api/api.interface";
 
 @Injectable()
 export class DictonaryService {
   constructor(private api: ApiService) {}
 
-  async getAll(): Promise<any> {
+  async getAll(): Promise<ApiResult> {
     let actionTypes = await this.api.getAll("actionTypes");
-    if (actionTypes.length === 0) {
-      await this.fillActionTypes();
-      actionTypes = await this.api.getAll("actionTypes");
+    if (actionTypes.result && Array.isArray(actionTypes.result)) {
+      if (actionTypes.result.length === 0) {
+        await this.fillActionTypes();
+        actionTypes = await this.api.getAll("actionTypes");
+      }
     }
 
     let workTypes = await this.api.getAll("workTypes");
-    if (workTypes.length === 0) {
-      await this.fillWorkTypes();
-      workTypes = await this.api.getAll("workTypes");
+    if (workTypes.result && Array.isArray(workTypes.result)) {
+      if (workTypes.result.length === 0) {
+        await this.fillWorkTypes();
+        workTypes = await this.api.getAll("workTypes");
+      }
     }
 
     let statusTypes = await this.api.getAll("statusTypes");
-    if (statusTypes.length === 0) {
-      await this.fillStatusTypes();
-      statusTypes = await this.api.getAll("statusTypes");
+    if (statusTypes.result && Array.isArray(statusTypes.result)) {
+      if (statusTypes.result.length === 0) {
+        await this.fillStatusTypes();
+        statusTypes = await this.api.getAll("statusTypes");
+      }
     }
 
-    return { actionTypes, workTypes, statusTypes, WORK, STATUS, ACTION };
+    const answer: ApiResult = {
+      result: {
+        actionTypes: actionTypes.result,
+        workTypes: workTypes.result,
+        statusTypes: statusTypes.result,
+        WORK,
+        STATUS,
+        ACTION,
+      },
+      error: null,
+    };
+
+    return answer;
   }
 
   private async fillActionTypes(): Promise<any> {

@@ -1,5 +1,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Controller, Get, Put, Param, Body } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Put,
+  Post,
+  Param,
+  Body,
+  Response,
+  StreamableFile,
+} from "@nestjs/common";
+import { createReadStream } from "fs";
+import { ApiResult } from "../api/api.interface";
 import { Setting } from "./settings.interface";
 import { SettingsService } from "./settings.service";
 
@@ -15,6 +26,23 @@ export class SettingsController {
   @Get("/updateServer")
   updateServer(): Promise<any> {
     return this.settingsService.updateServer().catch(() => {});
+  }
+
+  @Get("/backup")
+  backup(@Response({ passthrough: true }) res): StreamableFile {
+    const backup = this.settingsService.backup(); //.catch(() => {});
+    const file = createReadStream(backup.dist);
+    res.set({
+      "Content-Type": "application/json",
+      filename: "dsfs",
+      "Content-Disposition": `attachment; filename="${backup.fileName}"`,
+    });
+    return new StreamableFile(file);
+  }
+
+  @Post("/restore")
+  async restore(@Body() value: any): Promise<ApiResult> {
+    return await this.settingsService.restore(value);
   }
 
   @Get("/serverTime")

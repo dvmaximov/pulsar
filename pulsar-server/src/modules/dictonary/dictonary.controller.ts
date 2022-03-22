@@ -1,6 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
 
-import { Dictonary } from "./types/dictonary.interface";
+import { ApiResult } from "../api/api.interface";
 import { DictonaryService } from "./dictonary.service";
 
 @Controller("dictonary")
@@ -8,7 +8,7 @@ export class DictonaryController {
   constructor(private readonly dictonaryService: DictonaryService) {}
 
   @Get()
-  index(): Promise<Dictonary> {
+  index(): Promise<ApiResult> {
     return this.dictonaryService.getAll();
   }
 }

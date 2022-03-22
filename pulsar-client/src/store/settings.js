@@ -1,9 +1,6 @@
 import format from "date-fns/format";
 import { makeAutoObservable } from "mobx";
-import settingsService from "../services/settings.service";
-
-const service =
-  import.meta.env.VITE_STORE === "STATIC" ? null : settingsService;
+import api from "../services/api.service";
 
 class Settings {
   settingList = [];
@@ -27,14 +24,14 @@ class Settings {
   }
 
   async fetch() {
-    const result = await service.fetch();
-    this.fill(result.settings);
-    this.fillSETTING(result.SETTING);
-    await service.getServerTime();
+    const answer = await api.fetch("settings");
+    this.fill(answer.settings.result);
+    this.fillSETTING(answer.SETTING);
+    await api.fetch("settings/serverTime");
   }
 
   async update(setting) {
-    await service.update(setting);
+    await api.update("settings", setting);
 
     const newSettings = [...this.settingList];
     const idx = newSettings.findIndex((item) => item.id === setting.id);
@@ -43,11 +40,36 @@ class Settings {
   }
 
   async updateServer() {
-    await service.updateServer();
+    // setTimeout(() => {
+    //   window.close();
+    // }, 2000);
+    await api.fetch(`settings/updateServer`);
+  }
+
+  async backup() {
+    await api.backup("settings/backup");
+  }
+
+  async restore(value) {
+    setTimeout(() => {
+      window.close();
+    }, 2000);
+    return await api.restore("settings/restore", value);
   }
 
   async shutdown() {
-    await service.shutdown();
+    setTimeout(() => {
+      window.close();
+    }, 2000);
+    await api.get(`settings/shutdown`);
+  }
+
+  async calibrateAzimuth(time) {
+    return await api.fetch(`works/calibrateAzimuth?time=${time}`);
+  }
+
+  async calibrateSlope(time) {
+    return await api.fetch(`works/calibrateSlope?time=${time}`);
   }
 }
 

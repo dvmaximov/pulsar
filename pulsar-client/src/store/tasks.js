@@ -1,9 +1,11 @@
 import { makeAutoObservable } from "mobx";
-import taskService from "../services/task.service";
-import taskStaticService from "../services/static/task.service.static";
+import api from "../services/api.service";
 
-const service =
-  import.meta.env.VITE_STORE === "STATIC" ? taskStaticService : taskService;
+// import taskService from "../services/task.service";
+// import taskStaticService from "../services/static/task.service.static";
+
+// const service =
+//   import.meta.env.VITE_STORE === "STATIC" ? taskStaticService : taskService;
 
 class Tasks {
   taskList = [];
@@ -16,32 +18,34 @@ class Tasks {
     this.taskList = data;
   }
 
+  async fetch() {
+    const answer = await api.fetch("tasks");
+    this.fill(answer.result);
+  }
+
+  async fetchById(id) {
+    const answer = await api.fetchById("tasks", id);
+    return answer.result;
+  }
+
   async remove(task) {
-    const result = await service.remove(task.id);
-    if (result.removed === 1) {
-      const newData = this.taskList.filter((item) => item.id !== task.id);
-      this.fill(newData);
-    }
-    return result.removed;
+    const answer = await api.remove("tasks", task.id);
+    const newData = this.taskList.filter((item) => item.id !== task.id);
+    this.fill(newData);
+    return answer.result;
   }
 
   async create(task) {
-    const newTask = await service.create(task);
+    const answer = await api.create("tasks", task);
+    const newTask = answer.result;
     this.fill([...this.taskList, newTask]);
   }
 
   async update(task) {
-    const result = await service.update(task);
+    const answer = await api.update("tasks", task);
     let idx = this.taskList.findIndex((item) => item.id === task.id);
     this.taskList[idx] = { ...task };
-  }
-
-  async fetch() {
-    this.fill(await service.fetch());
-  }
-
-  async fetchById(id) {
-    return await service.fetchById(id);
+    return answer.result;
   }
 }
 

@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ApiService } from "../api/api.service";
 import { Work } from "./work.interface";
+import { ApiResult } from "../api/api.interface";
 
 const MAX_WORKS = 15;
 
@@ -8,7 +9,7 @@ const MAX_WORKS = 15;
 export class WorksService {
   constructor(private api: ApiService) {}
 
-  private async clearWorks(works) {
+  private async clearWorks(works): Promise<Array<Work>> {
     const result = [...works];
     const different = works.length - MAX_WORKS;
     if (different > 0) {
@@ -20,31 +21,31 @@ export class WorksService {
     return result;
   }
 
-  async getAll(): Promise<any> {
-    let works = await this.api.getAll("works");
-    works = await this.clearWorks(works);
-    return works;
+  async getAll(): Promise<ApiResult> {
+    const answer: ApiResult = await this.api.getAll("works");
+    try {
+      answer.result = await this.clearWorks(answer.result);
+    } catch (e) {
+      answer.result = null;
+      answer.error = e;
+    }
+
+    return answer;
   }
 
-  async getCurrentWork(): Promise<any> {
+  async getCurrentWork(): Promise<ApiResult> {
     return await this.api.getAll("currentWork");
   }
 
-  async create(work: Work): Promise<Work> {
+  async create(work: Work): Promise<ApiResult> {
     return await this.api.create("works", work);
   }
 
-  async update(id: number, work: Work): Promise<Work> {
+  async update(id: number, work: Work): Promise<ApiResult> {
     return await this.api.update("works", id, work);
   }
 
-  async delete(id: any): Promise<any> {
-    let result = { removed: 1, error: "" };
-    try {
-      await this.api.delete("works", id);
-    } catch (e) {
-      result = { removed: 0, error: e };
-    }
-    return result;
+  async delete(id: any): Promise<ApiResult> {
+    return await this.api.delete("works", id);
   }
 }

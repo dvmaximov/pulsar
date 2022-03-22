@@ -1,3 +1,5 @@
+import api from "../services/api.service";
+
 import axios from "axios";
 
 const host = `${location.protocol}//${location.hostname}`;

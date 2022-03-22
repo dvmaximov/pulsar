@@ -7,6 +7,7 @@ import { WorksService } from "./works.service";
 import { ACTION, ActionType } from "../dictonary/types/actionType.interface";
 import { STATUS, StatusType } from "../dictonary/types/statusType.interface";
 import { DeviceService } from "./device.service";
+import { ApiResult } from "../api/api.interface";
 
 const ALONE_ID = 1;
 
@@ -30,7 +31,8 @@ export class RunnerService {
 
   private async prepare() {
     await this.removeCurrentWork();
-    const { statusTypes, actionTypes } = await this.dictonary.getAll();
+    const answer = await this.dictonary.getAll();
+    const { statusTypes, actionTypes } = answer.result;
     this.statusTypes = statusTypes;
     this.actionTypes = actionTypes;
     this.timers = await this.fillTimers();
@@ -97,13 +99,10 @@ export class RunnerService {
     this.socket.workStatusUpdate();
   }
 
-  // private clearTimers(): void {
-  //   this.timers.forEach((item) => clearTimeout(item.timer));
-  //   this.timers = [];
-  // }
-
   private async fillTimers() {
-    let works = await this.works.getAll();
+    const answer: ApiResult = await this.works.getAll();
+    if (!answer.result || !Array.isArray(answer.result)) return;
+    let works = answer.result;
     works = works.map((item) => item.status.id === STATUS.STATUS_WAIT);
     const timers = [];
     works.forEach((item) => {
@@ -119,17 +118,13 @@ export class RunnerService {
   }
 
   private async checkWorkForRun() {
-    let works = await this.works.getAll();
+    const answer = await this.works.getAll();
+    if (!answer.result || !Array.isArray(answer.result)) return answer;
+    let works = answer.result;
     works = works.filter((item) => item.status.id === STATUS.STATUS_RUN);
-    // let candidate = null;
     works.forEach((item) => {
-      // if (idx === 0 && !this.currentWork) {
-      //   candidate = item;
-      // } else {
       this.updateStatus(item, STATUS.STATUS_EXPIRED);
-      // }
     });
-    // if (candidate) await this.createCurrentWork(candidate);
   }
 
   private async startWork(work) {

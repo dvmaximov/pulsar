@@ -76,23 +76,23 @@ export class DeviceService {
   }
 
   private async calculeteAngle(azimuth): Promise<any> {
-    let speed = await this.settings.getById(SETTING.SETTING_AZIMUTH_SPEED);
-    speed = speed.value;
-    let currentAngle = await this.settings.getById(
+    let speed: any = await this.settings.getById(SETTING.SETTING_AZIMUTH_SPEED);
+    speed = speed.result.value;
+    let currentAngle: any = await this.settings.getById(
       SETTING.SETTING_CURRENT_AZIMUTH,
     );
-    currentAngle = currentAngle.value;
+    currentAngle = currentAngle.result.value;
     const different = azimuth - currentAngle;
     return different / speed;
   }
 
   private async calculeteSlope(slope): Promise<any> {
-    let speed = await this.settings.getById(SETTING.SETTING_SLOPE_SPEED);
-    speed = speed.value;
-    let currentSlope = await this.settings.getById(
+    let speed: any = await this.settings.getById(SETTING.SETTING_SLOPE_SPEED);
+    speed = speed.result.value;
+    let currentSlope: any = await this.settings.getById(
       SETTING.SETTING_CURRENT_SLOPE,
     );
-    currentSlope = currentSlope.value;
+    currentSlope = currentSlope.result.value;
     const different = slope - currentSlope;
     return different / speed;
   }
@@ -120,9 +120,10 @@ export class DeviceService {
       await this.delay(time);
       await this.writePin(direction, DEVICE.DEVICE_OFF);
 
-      const azimuth = await this.settings.getById(
+      let azimuth: any = await this.settings.getById(
         SETTING.SETTING_CURRENT_AZIMUTH,
       );
+      azimuth = azimuth.result;
       azimuth.value = value;
       await this.settings.update(SETTING.SETTING_CURRENT_AZIMUTH, azimuth);
     } catch (e) {
@@ -140,8 +141,9 @@ export class DeviceService {
     await this.delay(time);
     this.writePin(direction, DEVICE.DEVICE_OFF);
 
-    const slope = await this.settings.getById(SETTING.SETTING_CURRENT_SLOPE);
-    slope.value = value;
+    let slope: any = await this.settings.getById(SETTING.SETTING_CURRENT_SLOPE);
+    slope = slope.result;
+    slope.value = value.result;
     this.settings.update(SETTING.SETTING_CURRENT_SLOPE, slope);
   }
 

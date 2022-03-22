@@ -1,9 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import worksService from "../services/works.service";
-import worksStaticService from "../services/static/works.service.static";
-
-const service =
-  import.meta.env.VITE_STORE === "STATIC" ? worksStaticService : worksService;
+import api from "../services/api.service";
 
 class Works {
   workList = [];
@@ -26,39 +22,30 @@ class Works {
   }
 
   async fetch() {
-    const result = await service.fetch();
-    this.fill(result);
+    const answer = await api.fetch("works");
+    this.fill(answer.result);
   }
 
   async fetchCurrentWork() {
-    const result = await service.fetchCurrentWork();
-    this.fillCurrentWork(result);
+    const answer = await api.fetch("works/currentWork");
+    this.fillCurrentWork(answer.result);
   }
 
   async create(work) {
-    const newWork = await service.create(work);
+    const answer = await api.create("works", work);
+    const newWork = answer.result;
     this.fill([...this.workList, newWork]);
   }
 
-  async stopCurrent(work) {
-    return await service.stopCurrent();
-  }
-
-  async calibrateAzimuth(time) {
-    return await service.calibrateAzimuth(time);
-  }
-
-  async calibrateSlope(time) {
-    return await service.calibrateSlope(time);
+  async stopCurrent() {
+    return await api.fetch("works/stopCurrent");
   }
 
   async remove(work) {
-    const result = await service.remove(work.id);
-    if (result.removed === 1) {
-      const newWorks = this.workList.filter((item) => item.id !== work.id);
-      this.fill(newWorks);
-    }
-    return result.removed;
+    const answer = await api.remove("works", work.id);
+    const newWorks = this.workList.filter((item) => item.id !== work.id);
+    this.fill(newWorks);
+    return answer.result;
   }
 }
 

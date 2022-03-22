@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import SettingsList from "../components/Settings/SettingsList";
 import SettingsControls from "../components/Settings/SettingsControls";
 import SettingsCalibrate from "../components/Settings/SettingsCalibrate";
+import SettingsBackup from "../components/Settings/SettingsBackup";
 import BaseDialog from "../components/BaseDialog";
 
 import { settings } from "../store";
@@ -75,6 +76,9 @@ const Settings = () => {
         openDialog={onOpenDialog}
         openConfirm={onOpenConfirm}
       ></SettingsControls>
+
+      <SettingsBackup></SettingsBackup>
+
       <BaseDialog open={openDialog} onCloseDialog={onCloseDialog}>
         <SettingsCalibrate onCancel={onCloseDialog} mode={mode} />
       </BaseDialog>
