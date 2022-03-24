@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { SettingsService } from "../settings/settings.service";
 import { Gpio } from "./gpio.service";
 import { SETTING } from "../settings/settings.interface";
+import { SocketService } from "../api/socket.service";
 
 const PIN = {
   PIN_LEFT: 7,
@@ -24,7 +25,10 @@ export class DeviceService {
   private driveDown = null;
   private spark = null;
 
-  constructor(private readonly settings: SettingsService) {
+  constructor(
+    private readonly settings: SettingsService,
+    private readonly socket: SocketService,
+  ) {
     this.driveLeft = new Gpio({ pin: PIN.PIN_LEFT });
     this.driveRight = new Gpio({ pin: PIN.PIN_RIGHT });
     this.driveUp = new Gpio({ pin: PIN.PIN_UP });
@@ -124,6 +128,7 @@ export class DeviceService {
       azimuth = azimuth.result;
       azimuth.value = value;
       await this.settings.update(SETTING.SETTING_CURRENT_AZIMUTH, azimuth);
+      await this.socket.settingsUpdate();
     } catch (e) {
       console.log("azimuth error");
     }
@@ -143,6 +148,7 @@ export class DeviceService {
     slope = slope.result;
     slope.value = value.result;
     this.settings.update(SETTING.SETTING_CURRENT_SLOPE, slope);
+    await this.socket.settingsUpdate();
   }
 
   async setWait(value): Promise<any> {

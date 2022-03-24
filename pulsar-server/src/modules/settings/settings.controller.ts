@@ -14,7 +14,7 @@ import { ApiResult } from "../api/api.interface";
 import { Setting } from "./settings.interface";
 import { SettingsService } from "./settings.service";
 
-@Controller("settings")
+@Controller("api/settings")
 export class SettingsController {
   constructor(private readonly settingsService: SettingsService) {}
 

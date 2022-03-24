@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 
 import Box from "@mui/material/Box";
@@ -7,10 +8,22 @@ import ListItem from "@mui/material/ListItem";
 
 import { useStatusBgColor } from "../../hooks/useStatusBgColor";
 import { useDateFormat } from "../../hooks/useDateFormat";
+import { dictonary } from "../../store";
 
-const WorkItem = ({ work, onSelect, onRemove }) => {
+const WorkItem = ({ work, onRemove }) => {
   const bgColor = useStatusBgColor(work.status);
   const date = useDateFormat(work.startTime);
+  const navigate = useNavigate();
+
+  const cursor =
+    work.status.id === dictonary.STATUS.STATUS_RUN ? "pointer" : "default";
+
+  const onDetails = () => {
+    if (work.status.id === dictonary.STATUS.STATUS_RUN) {
+      navigate(`/works/current-work`);
+    }
+  };
+
   return (
     <ListItem
       sx={{
@@ -26,10 +39,11 @@ const WorkItem = ({ work, onSelect, onRemove }) => {
           width: "80%",
           border: "1px solid #001e3c",
           borderRadius: "2px",
-          cursor: "pointer",
+          cursor: () => cursor,
           flexWrap: "wrap",
           bgcolor: bgColor,
         }}
+        onClick={onDetails}
       >
         <Typography
           variant="p"
@@ -50,7 +64,8 @@ const WorkItem = ({ work, onSelect, onRemove }) => {
           component="span"
           sx={{ width: { xs: "100%", sm: "20%" }, padding: 1 }}
         >
-          {date}
+          {!!date && date}
+          {!date && "немедленно"}
         </Typography>
       </Box>
       <Box

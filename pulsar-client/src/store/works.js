@@ -22,27 +22,27 @@ class Works {
   }
 
   async fetch() {
-    const answer = await api.fetch("works");
+    const answer = await api.fetch("api/works");
     this.fill(answer.result);
   }
 
   async fetchCurrentWork() {
-    const answer = await api.fetch("works/currentWork");
+    const answer = await api.fetch("api/works/currentWork");
     this.fillCurrentWork(answer.result);
   }
 
   async create(work) {
-    const answer = await api.create("works", work);
+    const answer = await api.create("api/works", work);
     const newWork = answer.result;
     this.fill([...this.workList, newWork]);
   }
 
   async stopCurrent() {
-    return await api.fetch("works/stopCurrent");
+    return await api.fetch("api/works/stopCurrent");
   }
 
   async remove(work) {
-    const answer = await api.remove("works", work.id);
+    const answer = await api.remove("api/works", work.id);
     const newWorks = this.workList.filter((item) => item.id !== work.id);
     this.fill(newWorks);
     return answer.result;

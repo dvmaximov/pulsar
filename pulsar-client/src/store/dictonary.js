@@ -24,7 +24,7 @@ class Dictonary {
   }
 
   async fetch() {
-    const answer = await api.fetch("dictonary");
+    const answer = await api.fetch("api/dictonary");
     this.fill(answer.result);
   }
 

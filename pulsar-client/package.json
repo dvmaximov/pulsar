@@ -2,10 +2,8 @@
   "name": "pulsar",
   "version": "0.0.0",
   "scripts": {
-    "dev": "cross-env DATA_MODE=STATIC BUILD_DIST=device vite",
-    "dev:server": "cross-env DATA_MODE=SERVER BUILD_DIST=device vite",
-    "build": "cross-env DATA_MODE=STATIC BUILD_DIST=git vite build",
-    "build:device": "cross-env DATA_MODE=SERVER BUILD_DIST=device vite build",
+    "dev": "cross-env DATA_MODE=SERVER BUILD_DIST=device vite",
+    "build": "cross-env DATA_MODE=SERVER BUILD_DIST=device vite build",
     "preview": "vite preview"
   },
   "dependencies": {

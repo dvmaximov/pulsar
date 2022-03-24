@@ -3,7 +3,7 @@ import { Controller, Get } from "@nestjs/common";
 import { ApiResult } from "../api/api.interface";
 import { DictonaryService } from "./dictonary.service";
 
-@Controller("dictonary")
+@Controller("api/dictonary")
 export class DictonaryController {
   constructor(private readonly dictonaryService: DictonaryService) {}
 

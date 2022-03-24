@@ -12,7 +12,7 @@ import { Task } from "./task.interface";
 import { TasksService } from "./tasks.service";
 import { ApiResult } from "../api/api.interface";
 
-@Controller("tasks")
+@Controller("api/tasks")
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 

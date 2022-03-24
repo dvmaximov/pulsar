@@ -32,6 +32,7 @@ const AppRouter = ({ routes }) => {
                 <Route path="/works/current-work" element={<CurrentWork />} />
               </Route>
               <Route path={`${root}settings`} element={<Settings />}></Route>
+              <Route path={`*`} element={<Home />}></Route>
             </Route>
           </Routes>
         </MainLayout>

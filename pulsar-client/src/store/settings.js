@@ -24,14 +24,14 @@ class Settings {
   }
 
   async fetch() {
-    const answer = await api.fetch("settings");
+    const answer = await api.fetch("api/settings");
     this.fill(answer.settings.result);
     this.fillSETTING(answer.SETTING);
-    await api.fetch("settings/serverTime");
+    await api.fetch("api/settings/serverTime");
   }
 
   async update(setting) {
-    await api.update("settings", setting);
+    await api.update("api/settings", setting);
 
     const newSettings = [...this.settingList];
     const idx = newSettings.findIndex((item) => item.id === setting.id);
@@ -40,36 +40,36 @@ class Settings {
   }
 
   async updateServer() {
-    // setTimeout(() => {
-    //   window.close();
-    // }, 2000);
-    await api.fetch(`settings/updateServer`);
+    setTimeout(() => {
+      window.close();
+    }, 2000);
+    await api.fetch(`api/settings/updateServer`);
   }
 
   async backup() {
-    await api.backup("settings/backup");
+    await api.backup("api/settings/backup");
   }
 
   async restore(value) {
     setTimeout(() => {
       window.close();
     }, 2000);
-    return await api.restore("settings/restore", value);
+    return await api.restore("api/settings/restore", value);
   }
 
   async shutdown() {
     setTimeout(() => {
       window.close();
     }, 2000);
-    await api.get(`settings/shutdown`);
+    await api.fetch(`api/settings/shutdown`);
   }
 
   async calibrateAzimuth(time) {
-    return await api.fetch(`works/calibrateAzimuth?time=${time}`);
+    return await api.fetch(`api/works/calibrateAzimuth?time=${time}`);
   }
 
   async calibrateSlope(time) {
-    return await api.fetch(`works/calibrateSlope?time=${time}`);
+    return await api.fetch(`api/works/calibrateSlope?time=${time}`);
   }
 }
 

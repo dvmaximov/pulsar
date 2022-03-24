@@ -15,7 +15,7 @@ import { WorksService } from "./works.service";
 import { RunnerService } from "./runner.service";
 import { ApiResult } from "../api/api.interface";
 
-@Controller("works")
+@Controller("api/works")
 export class WorksController {
   constructor(
     private readonly worksService: WorksService,

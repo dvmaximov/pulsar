@@ -15,20 +15,22 @@ const StatusDevice = () => {
   }, []);
 
   const settingList = settings.settingList
-    .filter(
-      (setting) =>
-        setting.id !== settings.SETTING.SETTING_AZIMUTH_SPEED &&
-        setting.id !== settings.SETTING.SETTING_SLOPE_SPEED
-    )
-    .map((setting) => {
-      return (
-        <SettingsItem
-          key={setting.id}
-          setting={setting}
-          editable={false}
-        ></SettingsItem>
-      );
-    });
+    ? settings.settingList
+        .filter(
+          (setting) =>
+            setting.id !== settings.SETTING.SETTING_AZIMUTH_SPEED &&
+            setting.id !== settings.SETTING.SETTING_SLOPE_SPEED
+        )
+        .map((setting) => {
+          return (
+            <SettingsItem
+              key={setting.id}
+              setting={setting}
+              editable={false}
+            ></SettingsItem>
+          );
+        })
+    : null;
 
   return (
     <Box

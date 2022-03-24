@@ -6,10 +6,10 @@ export const useStatusBgColor = (status, initValue = "#f1f1f1") => {
     switch (status.id) {
       case dictonary.STATUS.STATUS_RUN:
         return "#ffffe6";
-        break;
       case dictonary.STATUS.STATUS_DONE:
         return "#e8ffe6";
-        break;
+      case dictonary.STATUS.STATUS_EXPIRED:
+        return "#ffe6e7";
       default:
         return initValue;
     }

@@ -15,3 +15,7 @@ socket.on("workStatusUpdate", (e) => {
 socket.on("serverTime", (e) => {
   settings.setServerTime(+e);
 });
+
+socket.on("settingsUpdate", (e) => {
+  settings.fetch();
+});
