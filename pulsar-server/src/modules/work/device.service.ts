@@ -80,12 +80,20 @@ export class DeviceService {
   private async calculeteAngle(azimuth): Promise<any> {
     let speed: any = await this.settings.getById(SETTING.SETTING_AZIMUTH_SPEED);
     speed = speed.result.value;
+    if (speed === 0) return 0;
+
     let currentAngle: any = await this.settings.getById(
       SETTING.SETTING_CURRENT_AZIMUTH,
     );
     currentAngle = currentAngle.result.value;
     const different = azimuth - currentAngle;
-    return different / speed;
+    let time = different / speed;
+    /**
+     * При установке 0 по азимуту добавить 1 секутду для гарантии достижения стопора
+     */
+    if (different !== 0 && azimuth === 0) time += 1;
+
+    return time;
   }
 
   private async calculeteSlope(slope): Promise<any> {
@@ -100,9 +108,9 @@ export class DeviceService {
   }
 
   async calibrateAzimuth(time) {
-    this.writePin(PIN.PIN_LEFT, DEVICE.DEVICE_ON);
+    this.writePin(PIN.PIN_RIGHT, DEVICE.DEVICE_ON);
     await this.delay(time * 1000);
-    this.writePin(PIN.PIN_LEFT, DEVICE.DEVICE_OFF);
+    this.writePin(PIN.PIN_RIGHT, DEVICE.DEVICE_OFF);
   }
 
   async calibrateSlope(time) {
@@ -114,10 +122,10 @@ export class DeviceService {
   async setAzimuth(value): Promise<any> {
     try {
       let time = await this.calculeteAngle(value);
-      const direction = time < 0 ? PIN.PIN_RIGHT : PIN.PIN_LEFT;
+      if (time === 0) return;
+      const direction = time < 0 ? PIN.PIN_LEFT : PIN.PIN_RIGHT;
       time = Math.abs(time * 1000);
 
-      if (time === 0) return;
       await this.writePin(direction, DEVICE.DEVICE_ON);
       await this.delay(time);
       await this.writePin(direction, DEVICE.DEVICE_OFF);

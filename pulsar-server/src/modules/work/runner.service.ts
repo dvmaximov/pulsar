@@ -199,6 +199,17 @@ export class RunnerService {
           break;
       }
     }
+    const zeroAction = {
+      id: "zero-azimuth",
+      type: {
+        id: 1,
+        name: "установка азимута",
+      },
+      value1: 0,
+      value2: 0,
+      value3: 0,
+    };
+    details.push({ ...zeroAction, status: { ...defaultStatus } });
     this.currentWork.work.details = [...details];
   }
 
