@@ -90,8 +90,9 @@ export class DeviceService {
     let time = different / speed;
     /**
      * При установке 0 по азимуту добавить 1 секутду для гарантии достижения стопора
+     * (time отрицательный)
      */
-    if (different !== 0 && azimuth === 0) time += 1;
+    if (different !== 0 && azimuth === 0) time -= 1;
 
     return time;
   }
