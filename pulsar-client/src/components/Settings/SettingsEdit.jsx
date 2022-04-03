@@ -13,8 +13,14 @@ const SettingsEdit = ({ setting, onCancel, onSubmit }) => {
   const [value, setValue] = useState({ ...setting });
 
   const onChangeValue = (e) => {
-    const newValue = +e.target.value;
+    const newValue = e.target.value;
     setValue({ ...value, value: newValue });
+  };
+
+  const formatSetting = () => {
+    const newValue = { ...value };
+    newValue.value = Number((+newValue.value).toFixed(3));
+    return { ...newValue };
   };
 
   return (
@@ -51,7 +57,9 @@ const SettingsEdit = ({ setting, onCancel, onSubmit }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel}>Отмена</Button>
-        <Button onClick={() => onSubmit(value)}>Сохранить</Button>
+        <Button onClick={() => onSubmit(formatSetting(value))}>
+          Сохранить
+        </Button>
       </DialogActions>
     </>
   );

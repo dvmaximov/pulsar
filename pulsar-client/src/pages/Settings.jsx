@@ -19,6 +19,7 @@ const Settings = () => {
   const [mode, setMode] = useState("azimuth");
   const [confirmMode, setConfirmMode] = useState("");
   const [confirmMessage, setConfirmMessage] = useState("");
+  const [disableAll, setDisableAll] = useState(false);
 
   const onOpenDialog = (modeValue) => {
     setMode(modeValue);
@@ -44,6 +45,7 @@ const Settings = () => {
     }
     setConfirmMessage(() => message);
     setOpenConfirm(true);
+    setDisableAll(true);
   };
 
   const onSubmitConfirm = () => {
@@ -57,7 +59,7 @@ const Settings = () => {
         break;
     }
     submit();
-    onCloseConfirm();
+    setOpenConfirm(false);
   };
 
   const onCloseDialog = () => {
@@ -66,6 +68,7 @@ const Settings = () => {
 
   const onCloseConfirm = () => {
     setOpenConfirm(false);
+    setDisableAll(false);
   };
 
   return (
@@ -75,9 +78,10 @@ const Settings = () => {
       <SettingsControls
         openDialog={onOpenDialog}
         openConfirm={onOpenConfirm}
+        disableAll={disableAll}
       ></SettingsControls>
 
-      <SettingsBackup></SettingsBackup>
+      <SettingsBackup disableAll={disableAll}></SettingsBackup>
 
       <BaseDialog open={openDialog} onCloseDialog={onCloseDialog}>
         <SettingsCalibrate onCancel={onCloseDialog} mode={mode} />

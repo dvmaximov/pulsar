@@ -1,7 +1,9 @@
 import { observer } from "mobx-react-lite";
 import { useState, useMemo } from "react";
-import { format, parseISO, getTime } from "date-fns";
-import { ru } from "date-fns/locale";
+import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
+import getTime from "date-fns/getTime";
+import ru from "date-fns/locale/ru";
 
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";

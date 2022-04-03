@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 
 import { settings } from "../../store";
 
-const SettingsControls = ({ openDialog, openConfirm }) => {
+const SettingsControls = ({ openDialog, openConfirm, disableAll }) => {
   const onSubmitUpdate = () => {
     settings.shutdown;
   };
@@ -10,6 +10,7 @@ const SettingsControls = ({ openDialog, openConfirm }) => {
   return (
     <>
       <Button
+        disabled={disableAll}
         variant="contained"
         color="primary"
         onClick={() => {
@@ -20,6 +21,7 @@ const SettingsControls = ({ openDialog, openConfirm }) => {
         Обновление сервера
       </Button>
       <Button
+        disabled={disableAll}
         variant="contained"
         color="primary"
         onClick={() => {
@@ -30,6 +32,7 @@ const SettingsControls = ({ openDialog, openConfirm }) => {
         Выключить устройство
       </Button>
       <Button
+        disabled={disableAll}
         variant="contained"
         color="primary"
         onClick={() => {
@@ -40,6 +43,7 @@ const SettingsControls = ({ openDialog, openConfirm }) => {
         Калибровка азимута
       </Button>
       <Button
+        disabled={disableAll}
         variant="contained"
         color="primary"
         onClick={() => {

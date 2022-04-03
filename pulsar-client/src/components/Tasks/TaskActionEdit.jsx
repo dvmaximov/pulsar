@@ -37,16 +37,24 @@ const TaskActionEdit = ({ action, onSubmit, onCloseDialog }) => {
     dictonary.actionTypes.find((item) => item.id === currentAction.type.id)
   );
 
-  const onValue1Change = (e) => {
-    setCurrentAction(() => ({ ...currentAction, value1: +e.target.value }));
-  };
+  const onValueChange = (e) => {
+    // [0-9]+([\.,][0-9]+)?
+    let value = e.target.value.replace(/-/g, "");
 
-  const onValue2Change = (e) => {
-    setCurrentAction(() => ({ ...currentAction, value2: +e.target.value }));
-  };
+    let changed = {};
+    switch (e.target.dataset["source"]) {
+      case "value1":
+        changed = { value1: value };
+        break;
+      case "value2":
+        changed = { value2: value };
+        break;
+      case "value3":
+        changed = { value3: value };
+        break;
+    }
 
-  const onValue3Change = (e) => {
-    setCurrentAction(() => ({ ...currentAction, value3: +e.target.value }));
+    setCurrentAction(() => ({ ...currentAction, ...changed }));
   };
 
   const onTypeChange = (e) => {
@@ -55,7 +63,7 @@ const TaskActionEdit = ({ action, onSubmit, onCloseDialog }) => {
     setCurrentAction({
       ...currentAction,
       type: { id: type.id, name: type.name },
-      value1: 1,
+      value1: 0,
       value2: 0,
       value3: 0,
     });
@@ -70,6 +78,17 @@ const TaskActionEdit = ({ action, onSubmit, onCloseDialog }) => {
       )),
     []
   );
+
+  const formatAction = () => {
+    const newAction = { ...currentAction };
+    newAction.value1 =
+      newAction.type.id === dictonary.ACTION.ACTION_SPARK
+        ? Number(String(newAction.value1).split(".")[0])
+        : Number((+newAction.value1).toFixed(1));
+    newAction.value2 = Number((+newAction.value2).toFixed(1));
+    newAction.value3 = Number((+newAction.value3).toFixed(1));
+    return { ...newAction };
+  };
 
   return (
     <>
@@ -92,9 +111,10 @@ const TaskActionEdit = ({ action, onSubmit, onCloseDialog }) => {
             <TextField
               label={currentType.value1.label}
               value={currentAction.value1}
-              onChange={onValue1Change}
+              onChange={onValueChange}
               type="number"
               inputProps={{
+                "data-source": "value1",
                 max: currentType.value1.max,
                 min: currentType.value1.min,
                 step: currentType.value1.step,
@@ -105,13 +125,14 @@ const TaskActionEdit = ({ action, onSubmit, onCloseDialog }) => {
               }}
             />
           </FormControl>
-          {currentType.id === 4 && (
+          {currentType.id === dictonary.ACTION.ACTION_SPARK && (
             <TextField
               label={currentType.value2.label}
               value={currentAction.value2}
-              onChange={onValue2Change}
+              onChange={onValueChange}
               type="number"
               inputProps={{
+                "data-source": "value2",
                 max: currentType.value2.max,
                 min: currentType.value2.min,
                 step: currentType.value2.step,
@@ -122,13 +143,14 @@ const TaskActionEdit = ({ action, onSubmit, onCloseDialog }) => {
               }}
             />
           )}
-          {currentType.id === 4 && (
+          {currentType.id === dictonary.ACTION.ACTION_SPARK && (
             <TextField
               label={currentType.value3.label}
               value={currentAction.value3}
-              onChange={onValue3Change}
+              onChange={onValueChange}
               type="number"
               inputProps={{
+                "data-source": "value3",
                 max: currentType.value3.max,
                 min: currentType.value3.min,
                 step: currentType.value3.step,
@@ -143,7 +165,9 @@ const TaskActionEdit = ({ action, onSubmit, onCloseDialog }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onCloseDialog}>Отмена</Button>
-        <Button onClick={() => onSubmit(currentAction)}>Сохранить</Button>
+        <Button onClick={() => onSubmit(formatAction(currentAction))}>
+          Сохранить
+        </Button>
       </DialogActions>
     </>
   );

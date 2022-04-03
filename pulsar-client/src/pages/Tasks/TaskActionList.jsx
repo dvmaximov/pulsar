@@ -127,6 +127,32 @@ const TaskActionList = () => {
           </Button>
         </Box>
       </Box>
+      <Box>
+        <Typography
+          variant="h6"
+          sx={{
+            fontStyle: "italic",
+            color: "blue",
+            my: 1,
+          }}
+        >
+          {`Наименование: ${currentTask.name || ""}`}
+        </Typography>
+      </Box>
+      {items && items.length <= 0 && (
+        <Box
+          sx={{
+            my: 10,
+            fontWeight: "bold",
+            display: "flex",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          Список действий пуст
+        </Box>
+      )}
       <List>{items}</List>
       <BaseDialog open={openDialog} onCloseDialog={onCloseDialog}>
         <TaskActionEdit

@@ -49,6 +49,20 @@ const CurrentWork = () => {
           </Button>
         </Box>
       </Box>
+      {!details && (
+        <Box
+          sx={{
+            my: 10,
+            fontWeight: "bold",
+            display: "flex",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          Нет текущей задачи
+        </Box>
+      )}
       <List>{details}</List>
     </>
   );

@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 
 import { settings } from "../../store";
 
-const SettingsBackup = () => {
+const SettingsBackup = ({ disableAll }) => {
   const restore = useRef();
   const onSubmitBackup = () => {
     settings.backup();
@@ -30,6 +30,7 @@ const SettingsBackup = () => {
         }}
       >
         <Button
+          disabled={disableAll}
           variant="contained"
           color="primary"
           onClick={onSubmitBackup}
@@ -49,6 +50,7 @@ const SettingsBackup = () => {
               onInput={onSubmitRestore}
             />
             <Button
+              disabled={disableAll}
               variant="contained"
               color="primary"
               component="span"
