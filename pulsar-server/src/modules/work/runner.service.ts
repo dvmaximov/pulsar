@@ -51,7 +51,6 @@ export class RunnerService {
             this.startWork(work);
             this.removeTimer(work.id);
           }, wait);
-    if (!timer) this.updateStatus(work, STATUS.STATUS_EXPIRED);
     return timer;
   }
 
@@ -113,6 +112,8 @@ export class RunnerService {
           timerId: timer,
           workId: item.id,
         });
+      } else {
+        this.updateStatus(item, STATUS.STATUS_EXPIRED);
       }
     });
     return timers;
@@ -124,7 +125,7 @@ export class RunnerService {
     let works = answer.result;
     works = works.filter((item) => item.status.id === STATUS.STATUS_RUN);
     works.forEach((item) => {
-      this.updateStatus(item, STATUS.STATUS_EXPIRED);
+      this.updateStatus(item, STATUS.STATUS_STOPPED);
     });
   }
 
@@ -137,7 +138,7 @@ export class RunnerService {
     await this.createCurrentWork({ ...work });
     await this.updateStatus(work, STATUS.STATUS_RUN);
     await this.startLoop();
-    await this.updateStatus(work, STATUS.STATUS_DONE);
+    if (!this.stopped) await this.updateStatus(work, STATUS.STATUS_DONE);
     await this.removeCurrentWork();
   }
 
@@ -169,12 +170,14 @@ export class RunnerService {
     const defaultStatus = this.getStatus(STATUS.STATUS_WAIT);
     const waitAction = this.getAction(ACTION.ACTION_WAIT);
     const details = [];
+    let isAddZeroAzimuth = false;
     for (const action of actions) {
       switch (action.type.id) {
         case ACTION.ACTION_AZIMUTH:
         case ACTION.ACTION_SLOPE:
         case ACTION.ACTION_WAIT:
           details.push({ ...action, status: { ...defaultStatus } });
+          if (action.type.id === ACTION.ACTION_AZIMUTH) isAddZeroAzimuth = true;
           break;
         case ACTION.ACTION_SPARK:
           for (let i = 0; i < action.value1; i++) {
@@ -200,17 +203,19 @@ export class RunnerService {
           break;
       }
     }
-    const zeroAction = {
-      id: "zero-azimuth",
-      type: {
-        id: 1,
-        name: "установка азимута",
-      },
-      value1: 0,
-      value2: 0,
-      value3: 0,
-    };
-    details.push({ ...zeroAction, status: { ...defaultStatus } });
+    if (isAddZeroAzimuth) {
+      const zeroAction = {
+        id: "zero-azimuth",
+        type: {
+          id: 1,
+          name: "установка азимута",
+        },
+        value1: 0,
+        value2: 0,
+        value3: 0,
+      };
+      details.push({ ...zeroAction, status: { ...defaultStatus } });
+    }
     this.currentWork.work.details = [...details];
   }
 
@@ -253,7 +258,7 @@ export class RunnerService {
     this.stopped = true;
     await this.device.stopAll();
     if (this.currentWork) {
-      this.updateStatus(this.currentWork.work, STATUS.STATUS_DONE);
+      await this.updateStatus(this.currentWork.work, STATUS.STATUS_STOPPED);
       await this.removeCurrentWork();
     }
   }

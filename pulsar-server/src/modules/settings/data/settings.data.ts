@@ -3,12 +3,12 @@ export const defaultSettings: Setting[] = [
   {
     id: SETTING.SETTING_AZIMUTH_SPEED,
     name: "скорость вращения стола",
-    value: 4.911,
+    value: 4.822,
   },
   {
     id: SETTING.SETTING_SLOPE_SPEED,
     name: "скорость наклона стола",
-    value: 0.8,
+    value: 3,
   },
   {
     id: SETTING.SETTING_CURRENT_AZIMUTH,

@@ -16,4 +16,8 @@ export const defaultStatus = [
     id: STATUS.STATUS_EXPIRED,
     name: "просрочено",
   },
+  {
+    id: STATUS.STATUS_STOPPED,
+    name: "остановлено",
+  },
 ];

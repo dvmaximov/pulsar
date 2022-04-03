@@ -155,7 +155,7 @@ export class DeviceService {
 
     let slope: any = await this.settings.getById(SETTING.SETTING_CURRENT_SLOPE);
     slope = slope.result;
-    slope.value = value.result;
+    slope.value = value;
     this.settings.update(SETTING.SETTING_CURRENT_SLOPE, slope);
     await this.socket.settingsUpdate();
   }
