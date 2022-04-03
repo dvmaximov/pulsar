@@ -45,12 +45,13 @@ export class RunnerService {
     if (!start) return null;
     const wait = start - now;
     const timer =
-      wait < 0
+      wait <= 0
         ? null
         : setTimeout(() => {
             this.startWork(work);
             this.removeTimer(work.id);
           }, wait);
+    if (!timer) this.updateStatus(work, STATUS.STATUS_EXPIRED);
     return timer;
   }
 
@@ -103,7 +104,7 @@ export class RunnerService {
     const answer: ApiResult = await this.works.getAll();
     if (!answer.result || !Array.isArray(answer.result)) return;
     let works = answer.result;
-    works = works.map((item) => item.status.id === STATUS.STATUS_WAIT);
+    works = works.filter((item) => item.status.id === STATUS.STATUS_WAIT);
     const timers = [];
     works.forEach((item) => {
       const timer = this.createTimer(item);
@@ -150,9 +151,9 @@ export class RunnerService {
     await this.updateCurrentWork();
   }
 
-  private async updateCurrentWork(): Promise<Work> {
+  private async updateCurrentWork(): Promise<any> {
+    await this.api.update("currentWork", ALONE_ID, this.currentWork);
     this.socket.workStatusUpdate();
-    return await this.api.update("currentWork", ALONE_ID, this.currentWork);
   }
 
   private async removeCurrentWork(): Promise<any> {
@@ -245,6 +246,7 @@ export class RunnerService {
       details[i].status = this.getStatus(STATUS.STATUS_DONE);
       await this.updateCurrentWork();
     }
+    await this.updateCurrentWork();
   }
 
   async stopAll(): Promise<any> {

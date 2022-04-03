@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
+import format from "date-fns/format";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -7,12 +8,13 @@ import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 
 import { useStatusBgColor } from "../../hooks/useStatusBgColor";
-import { useDateFormat } from "../../hooks/useDateFormat";
 import { dictonary } from "../../store";
 
 const WorkItem = ({ work, onRemove }) => {
   const bgColor = useStatusBgColor(work.status);
-  const date = useDateFormat(work.startTime);
+  const date = !!work.startTime
+    ? format(work.startTime, "dd-MM-yyyy - HH:mm")
+    : null;
   const navigate = useNavigate();
 
   const cursor =
