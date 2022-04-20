@@ -13,10 +13,16 @@ import { createReadStream } from "fs";
 import { ApiResult } from "../api/api.interface";
 import { Setting } from "./settings.interface";
 import { SettingsService } from "./settings.service";
+import { BackupService } from "./backup.service";
+import { UpdateService } from "./update.service";
 
 @Controller("api/settings")
 export class SettingsController {
-  constructor(private readonly settingsService: SettingsService) {}
+  constructor(
+    private readonly settingsService: SettingsService,
+    private readonly backupService: BackupService,
+    private readonly updateService: UpdateService,
+  ) {}
 
   @Get()
   getAll(): Promise<any> {
@@ -25,12 +31,12 @@ export class SettingsController {
 
   @Get("/updateServer")
   updateServer(): Promise<any> {
-    return this.settingsService.updateServer().catch(() => {});
+    return this.updateService.updateCode().catch(() => {});
   }
 
   @Get("/backup")
   backup(@Response({ passthrough: true }) res): StreamableFile {
-    const backup = this.settingsService.backup(); //.catch(() => {});
+    const backup = this.backupService.backup(); //.catch(() => {});
     const file = createReadStream(backup.dist);
     res.set({
       "Content-Type": "application/json",
@@ -42,7 +48,12 @@ export class SettingsController {
 
   @Post("/restore")
   async restore(@Body() value: any): Promise<ApiResult> {
-    return await this.settingsService.restore(value);
+    return await this.backupService.restore(value);
+  }
+
+  @Post("/repair")
+  async repaint(): Promise<ApiResult> {
+    return await this.backupService.repair();
   }
 
   @Get("/serverTime")
@@ -53,6 +64,11 @@ export class SettingsController {
   @Get("/shutdown")
   shutdown(): Promise<any> {
     return this.settingsService.shutdown().catch(() => {});
+  }
+
+  @Get("/reboot")
+  reboot(): Promise<any> {
+    return this.settingsService.reboot().catch(() => {});
   }
 
   @Put(":id")

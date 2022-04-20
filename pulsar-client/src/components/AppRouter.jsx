@@ -10,6 +10,7 @@ import WorkList from "../pages/Works/WorkList";
 import CurrentWork from "../pages/Works/CurrentWork";
 import TaskActionList from "../pages/Tasks/TaskActionList";
 import Settings from "../pages/Settings";
+import Repair from "../pages/Repair";
 
 // const Works = lazy(() => import("../pages/Works"));
 
@@ -23,6 +24,7 @@ const AppRouter = ({ routes }) => {
           <Routes>
             <Route path={`${root}`} element={<Main />}>
               <Route path={`${root}`} element={<Home />} />
+              <Route path={`${root}remont`} element={<Repair />} />
               <Route path={`${root}tasks`} element={<Tasks />}>
                 <Route path={`${root}tasks`} element={<TaskList />} />
                 <Route path={`${root}tasks:id`} element={<TaskActionList />} />

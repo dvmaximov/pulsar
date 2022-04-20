@@ -39,7 +39,12 @@ const TaskActionEdit = ({ action, onSubmit, onCloseDialog }) => {
 
   const onValueChange = (e) => {
     // [0-9]+([\.,][0-9]+)?
-    let value = e.target.value.replace(/-/g, "");
+    let value = e.target.value;
+
+    //только наклон может быть отрицательным
+    if (currentAction.type.id !== dictonary.ACTION.ACTION_SLOPE) {
+      value = value.replace(/-/g, "");
+    }
 
     let changed = {};
     switch (e.target.dataset["source"]) {

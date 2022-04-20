@@ -28,6 +28,10 @@ class ApiService {
     return res.data;
   }
 
+  async repair(path) {
+    return await axios.post(`${host}/${path}`);
+  }
+
   async backup(path) {
     await axios({
       url: `${host}/${path}`,

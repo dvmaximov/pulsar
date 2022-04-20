@@ -8,6 +8,7 @@ import { ACTION, ActionType } from "../dictonary/types/actionType.interface";
 import { STATUS, StatusType } from "../dictonary/types/statusType.interface";
 import { DeviceService } from "./device.service";
 import { ApiResult } from "../api/api.interface";
+import { BackupService } from "../settings/backup.service";
 
 const ALONE_ID = 1;
 
@@ -25,6 +26,7 @@ export class RunnerService {
     private dictonary: DictonaryService,
     private socket: SocketService,
     private device: DeviceService,
+    private backupService: BackupService,
   ) {
     this.prepare();
   }
@@ -130,6 +132,7 @@ export class RunnerService {
   }
 
   private async startWork(work) {
+    await this.backupService.backup("auto_backup.json");
     this.stopped = false;
     if (this.currentWork) {
       this.updateStatus(work, STATUS.STATUS_EXPIRED);

@@ -50,6 +50,13 @@ class Settings {
     await api.backup("api/settings/backup");
   }
 
+  async repair() {
+    setTimeout(() => {
+      window.close();
+    }, 2000);
+    await api.repair("api/settings/repair");
+  }
+
   async restore(value) {
     setTimeout(() => {
       window.close();

@@ -3,9 +3,7 @@ import { ApiService } from "../api/api.service";
 import { SocketService } from "../api/socket.service";
 import { defaultSettings } from "./data/settings.data";
 import { SETTING } from "./settings.interface";
-import { ApiResult, initResult } from "../api/api.interface";
-import { copyFileSync, readFileSync, writeFileSync, mkdirSync } from "fs";
-import * as path from "path";
+import { ApiResult } from "../api/api.interface";
 import * as cp from "child_process";
 
 const exec = cp.exec;
@@ -13,7 +11,7 @@ const exec = cp.exec;
 @Injectable()
 export class SettingsService {
   constructor(private api: ApiService, private socket: SocketService) {
-    const interval = setInterval(() => {
+    setInterval(() => {
       this.socket.sendServerTime();
     }, 60 * 1000);
   }
@@ -27,6 +25,9 @@ export class SettingsService {
       await this.fillSettings();
       answer = await this.api.getAll("settings");
     }
+    answer.result = answer.result.filter(
+      (item) => item.id !== SETTING.SETTING_PASS,
+    );
     return { settings: answer, SETTING };
   }
 
@@ -38,82 +39,12 @@ export class SettingsService {
     return this.api.update("settings", id, value);
   }
 
-  async updateServer(): Promise<ApiResult> {
-    const answer = { ...initResult };
-    const source = path.resolve(__dirname, "../../update/update.js");
-
-    answer.result = "Ok";
-    try {
-      await this.cmd(`cd /root/pulsar/pulsar-server`);
-      await this.cmd(`rm -rf dist`);
-      await this.cmd(`cd /root/pulsar`);
-      await this.cmd(`git pull origin master`);
-      await this.cmd(`node ${source}`);
-    } catch (e) {
-      answer.result = null;
-      answer.error = e;
-    }
-
-    try {
-      await this.cmd(`pm2 restart 0`);
-    } catch {}
-
-    return answer;
-  }
-
-  backup() {
-    let name = new Date().toLocaleString();
-    name = name
-      .replace(/ /g, "")
-      .replace(/,/g, "_")
-      .replace(/\./g, "-")
-      .replace(/:/g, "-")
-      .replace(/\//g, "-");
-    name = `backupDB_${name}.json`;
-
-    const source = path.resolve(__dirname, "../../../db.json");
-    const dist = path.resolve(__dirname, `../../../../backup/${name}`);
-    const distPath = path.resolve(__dirname, `../../../../backup`);
-
-    try {
-      mkdirSync(distPath);
-    } catch {}
-
-    copyFileSync(source, dist);
-    let db: any = {};
-
-    try {
-      db = readFileSync(dist, "utf8").toString();
-      db = JSON.parse(db);
-      db["works"] = [];
-      db["currentWork"] = [];
-      db = JSON.stringify(db);
-      writeFileSync(dist, db);
-    } catch (e) {
-      console.log(e);
-    }
-
-    return { fileName: name, dist };
-  }
-
-  async restore(value): Promise<any> {
-    const answer = { ...initResult };
-
-    answer.result = "Ok";
-    try {
-      const source = path.resolve(__dirname, "../../../db.json");
-      writeFileSync(source, JSON.stringify(value));
-      await this.cmd(`pm2 restart 0`);
-    } catch (e) {
-      answer.result = null;
-      answer.error = e;
-    }
-
-    return answer;
-  }
-
   async shutdown(): Promise<any> {
     return await this.cmd(`shutdown now`);
+  }
+
+  async reboot(): Promise<any> {
+    return await this.cmd(`reboot`);
   }
 
   async serverTime(): Promise<any> {

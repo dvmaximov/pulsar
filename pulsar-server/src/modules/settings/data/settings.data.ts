@@ -25,4 +25,14 @@ export const defaultSettings: Setting[] = [
     name: "версия",
     value: 1.0,
   },
+  {
+    id: SETTING.SETTING_PORT,
+    name: "HTTP port",
+    value: 80,
+  },
+  {
+    id: SETTING.SETTING_PASS,
+    name: "пароль",
+    value: "",
+  },
 ];
