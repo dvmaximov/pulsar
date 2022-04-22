@@ -6,9 +6,11 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import Button from "@mui/material/Button";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import TaskActionItem from "../../components/Tasks/TaskActionItem";
 import TaskActionEdit from "../../components/Tasks/TaskActionEdit";
+import AddTask from "../../components/Tasks/AddTask";
 import BaseDialog from "../../components/BaseDialog";
 import ConfirmDialog from "../../components/ConfirmDialog";
 
@@ -23,6 +25,7 @@ const TaskActionList = () => {
   const [currentTask, setCurrentTask] = useState({});
   const [openConfirm, setOpenConfirm] = useState(false);
   const [removeAction, setRemoveAction] = useState(null);
+  const [openEditTask, setOpenEditTask] = useState(false);
 
   const onToList = useCallback(() => {
     navigate(`/tasks`);
@@ -86,15 +89,59 @@ const TaskActionList = () => {
   };
 
   const items = Array.isArray(currentTask.actions)
-    ? currentTask.actions.map((action) => (
-        <TaskActionItem
-          key={action.id}
-          action={action}
-          onRemove={onRemove}
-          onEdit={onEdit}
-        />
+    ? currentTask.actions.map((action, index) => (
+        <Draggable key={action.id} draggableId={action.id} index={index}>
+          {(provided) => (
+            <TaskActionItem
+              innerRef={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              action={action}
+              onRemove={onRemove}
+              onEdit={onEdit}
+            />
+          )}
+        </Draggable>
       ))
     : null;
+
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const newActions = reorder(
+      currentTask.actions,
+      result.source.index,
+      result.destination.index
+    );
+    const updatedTask = { ...currentTask, actions: newActions };
+    setCurrentTask(updatedTask);
+    tasks.update(updatedTask);
+  };
+
+  const reorder = useCallback((list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  }, []);
+
+  const onEditTask = ({ name, description }) => {
+    const updatedTask = {
+      ...currentTask,
+      name,
+      description,
+    };
+    setCurrentTask(updatedTask);
+    setOpenEditTask(false);
+    tasks.update(updatedTask);
+  };
+
+  const onCloseEditTask = useCallback(() => {
+    setOpenEditTask(false);
+  }, []);
 
   return (
     <Box
@@ -127,7 +174,20 @@ const TaskActionList = () => {
           </Button>
         </Box>
       </Box>
-      <Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "start",
+        }}
+      >
+        <Button
+          color="primary"
+          onClick={() => setOpenEditTask(true)}
+          sx={{ mr: 1 }}
+        >
+          Изменить
+        </Button>
         <Typography
           variant="h6"
           sx={{
@@ -139,6 +199,7 @@ const TaskActionList = () => {
           {`Наименование: ${currentTask.name || ""}`}
         </Typography>
       </Box>
+
       {items && items.length <= 0 && (
         <Box
           sx={{
@@ -153,7 +214,21 @@ const TaskActionList = () => {
           Список действий пуст
         </Box>
       )}
-      <List>{items}</List>
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <Droppable droppableId="program">
+          {(provided) => (
+            <List
+              className="program"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {items}
+              {provided.placeholder}
+            </List>
+          )}
+        </Droppable>
+      </DragDropContext>
+
       <BaseDialog open={openDialog} onCloseDialog={onCloseDialog}>
         <TaskActionEdit
           open={openDialog}
@@ -172,6 +247,15 @@ const TaskActionList = () => {
           {removeAction?.type?.name}
         </Typography>
       </ConfirmDialog>
+
+      <BaseDialog open={openEditTask} onCloseDialog={onCloseEditTask}>
+        <AddTask
+          task={currentTask}
+          open={openEditTask}
+          onAddTask={onEditTask}
+          onCloseDialog={onCloseEditTask}
+        />
+      </BaseDialog>
     </Box>
   );
 };

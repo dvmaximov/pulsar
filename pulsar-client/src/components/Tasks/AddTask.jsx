@@ -9,10 +9,11 @@ import Box from "@mui/material/Box";
 
 import { useFieldError } from "../../hooks/useFieldError";
 
-const AddTask = ({ open, onAddTask, onCloseDialog }) => {
+const AddTask = ({ open, onAddTask, onCloseDialog, task }) => {
   const [nameError, nameTextError, setNameError] = useFieldError(
     "Имя не может быть пустым."
   );
+  const [title, setTitle] = useState("Новая программа");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -36,16 +37,22 @@ const AddTask = ({ open, onAddTask, onCloseDialog }) => {
 
   useEffect(() => {
     if (open) {
-      setName("");
+      if (task) {
+        setName(task.name);
+        setDescription(task.description);
+        setTitle("Изменить программу");
+      } else {
+        setName("");
+        setDescription("");
+      }
       setNameError(false);
-      setDescription("");
     }
   }, [open]);
 
   return (
     <>
       <DialogTitle>
-        <Typography>Новая программа</Typography>
+        <Typography>{title}</Typography>
       </DialogTitle>
       <DialogContent>
         <Box
@@ -76,7 +83,7 @@ const AddTask = ({ open, onAddTask, onCloseDialog }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onCloseDialog}>Отмена</Button>
-        <Button onClick={onSubmit}>Добавить</Button>
+        <Button onClick={onSubmit}>{task ? "Изменить" : "Добавить"}</Button>
       </DialogActions>
     </>
   );

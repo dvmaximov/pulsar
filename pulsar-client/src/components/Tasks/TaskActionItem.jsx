@@ -4,9 +4,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ListItem from "@mui/material/ListItem";
 
-const TaskActionItem = ({ action, onRemove, onEdit }) => {
+const TaskActionItem = ({ action, onRemove, onEdit, innerRef, ...rest }) => {
   return (
     <ListItem
+      ref={innerRef}
+      {...rest}
       sx={{
         color: "text.primary",
         mb: 0.5,
