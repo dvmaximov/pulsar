@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
+import { observer } from "mobx-react-lite";
 
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -9,11 +10,18 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
+import { settings } from "../../store";
+
 const SettingsEdit = ({ setting, onCancel, onSubmit }) => {
   const [value, setValue] = useState({ ...setting });
 
   const onChangeValue = (e) => {
-    const newValue = e.target.value;
+    let newValue = e.target.value;
+
+    if (value.id !== settings.SETTING.SETTING_CURRENT_SLOPE) {
+      newValue = newValue.replace(/-/g, "");
+    }
+
     setValue({ ...value, value: newValue });
   };
 
@@ -71,4 +79,4 @@ const styles = {
   },
 };
 
-export default SettingsEdit;
+export default observer(SettingsEdit);

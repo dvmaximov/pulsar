@@ -2,23 +2,34 @@ import { Injectable } from "@nestjs/common";
 import { ApiService } from "../api/api.service";
 import { Work } from "./work.interface";
 import { ApiResult } from "../api/api.interface";
+import { STATUS } from "../dictonary/types/statusType.interface";
 
-const MAX_WORKS = 15;
+const MAX_WORKS = 10;
 
 @Injectable()
 export class WorksService {
   constructor(private api: ApiService) {}
 
   private async clearWorks(works): Promise<Array<Work>> {
-    const result = [...works];
-    const different = works.length - MAX_WORKS;
+    let doneWorks = works.filter(
+      (item) =>
+        item.status.id === STATUS.STATUS_DONE ||
+        item.status.id === STATUS.STATUS_EXPIRED ||
+        item.status.id === STATUS.STATUS_STOPPED,
+    );
+    const waitWorks = works.filter(
+      (item) =>
+        item.status.id === STATUS.STATUS_WAIT ||
+        item.status.id === STATUS.STATUS_RUN,
+    );
+    const different = doneWorks.length - MAX_WORKS;
     if (different > 0) {
       for (let i = 0; i < different; i++) {
-        await this.delete(works[i].id);
-        result.shift();
+        await this.delete(doneWorks[i].id);
       }
+      doneWorks = doneWorks.slice(different);
     }
-    return result;
+    return [...doneWorks, ...waitWorks];
   }
 
   async getAll(): Promise<ApiResult> {
