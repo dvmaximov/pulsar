@@ -12,7 +12,13 @@ const TARGET_VERSION = 1.1;
 @Injectable()
 export class UpdateService {
   constructor(private api: ApiService, private settings: SettingsService) {
-    this.updateVersion();
+    this.autoRun();
+  }
+
+  private async autoRun() {
+    try {
+      await this.updateVersion();
+    } catch {}
   }
 
   async updateCode(): Promise<ApiResult> {
